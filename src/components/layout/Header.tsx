@@ -23,16 +23,16 @@ const Header = () => {
             <SheetContent side="left" className="w-[240px] sm:w-[300px]">
               <div className="flex flex-col gap-6 pt-6">
                 <Link 
-                  to="/" 
+                  to="/dashboard" 
                   className="flex items-center gap-2 text-lg font-bold"
                   onClick={closeSheet}
                 >
-                  <span className="text-fixit-primary">FixIt</span>
-                  <span className="text-fixit-accent">Tracker</span>
+                  <span className="text-fixit-primary">Road</span>
+                  <span className="text-fixit-accent">Care</span>
                 </Link>
                 <nav className="flex flex-col gap-4">
                   <Link
-                    to="/"
+                    to="/dashboard"
                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
                     onClick={closeSheet}
                   >
@@ -75,14 +75,14 @@ const Header = () => {
               </div>
             </SheetContent>
           </Sheet>
-          <Link to="/" className="flex items-center gap-1 text-lg font-bold">
-            <span className="text-fixit-primary">FixIt</span>
-            <span className="text-fixit-accent">Tracker</span>
+          <Link to="/dashboard" className="flex items-center gap-1 text-lg font-bold">
+            <span className="text-fixit-primary">Road</span>
+            <span className="text-fixit-accent">Care</span>
           </Link>
         </div>
         <nav className="hidden lg:flex items-center gap-6">
           <Link
-            to="/"
+            to="/dashboard"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <MapPin size={18} />

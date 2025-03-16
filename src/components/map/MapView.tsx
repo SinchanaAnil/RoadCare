@@ -30,14 +30,14 @@ const MapView = ({ reports }: MapViewProps) => {
   return (
     <div className="relative w-full h-full bg-gray-100 flex items-center justify-center">
       {/* Placeholder for actual map */}
-      <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/-122.4194,37.7749,12,0/1000x500?access_token=pk.example')] bg-cover bg-center opacity-50"></div>
+      <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/77.5946,12.9716,12,0/1000x500?access_token=pk.example')] bg-cover bg-center opacity-50"></div>
       
       <div className="absolute inset-0 flex items-center justify-center">
         <Card className="bg-background/80 backdrop-blur-sm p-4 max-w-md mx-auto">
-          <h3 className="text-lg font-semibold mb-2">Map Placeholder</h3>
+          <h3 className="text-lg font-semibold mb-2">Bangalore Road Map</h3>
           <p className="text-sm text-muted-foreground mb-4">
             This is a placeholder for the interactive map. In a real implementation, 
-            this would be an interactive map using Mapbox or Google Maps showing all reported issues.
+            this would be an interactive map using Mapbox or Google Maps showing all reported issues in Bangalore.
           </p>
         </Card>
       </div>
