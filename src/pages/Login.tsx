@@ -65,21 +65,27 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-fixit-light to-white p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-500 to-blue-50 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-fixit-primary mb-2">RoadCare</h1>
-          <p className="text-muted-foreground">Report road issues in Bangalore and track repairs</p>
+          <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-md">RoadCare</h1>
+          <p className="text-white/90 font-medium">Report road issues in Bangalore and track repairs</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-blue-100">
           <Tabs defaultValue="email" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="email" className="flex items-center gap-2">
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-blue-50">
+              <TabsTrigger 
+                value="email" 
+                className="flex items-center gap-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+              >
                 <Mail className="h-4 w-4" />
                 Email
               </TabsTrigger>
-              <TabsTrigger value="phone" className="flex items-center gap-2">
+              <TabsTrigger 
+                value="phone" 
+                className="flex items-center gap-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+              >
                 <Phone className="h-4 w-4" />
                 Phone
               </TabsTrigger>
@@ -88,7 +94,7 @@ const Login = () => {
             <TabsContent value="email">
               <form onSubmit={handleEmailLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
+                  <label htmlFor="email" className="text-sm font-medium text-gray-700">
                     Email Address
                   </label>
                   <Input
@@ -97,9 +103,10 @@ const Login = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    className="border-blue-200 focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
-                <Button type="submit" className="w-full bg-fixit-primary">
+                <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white">
                   Continue with Email
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -109,7 +116,7 @@ const Login = () => {
             <TabsContent value="phone">
               <form onSubmit={handlePhoneLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium">
+                  <label htmlFor="phone" className="text-sm font-medium text-gray-700">
                     Phone Number
                   </label>
                   <Input
@@ -118,9 +125,10 @@ const Login = () => {
                     placeholder="Enter your phone number"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    className="border-blue-200 focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
-                <Button type="submit" className="w-full bg-fixit-primary">
+                <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white">
                   Continue with Phone
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -133,7 +141,7 @@ const Login = () => {
               <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-muted-foreground">Or continue with</span>
+              <span className="px-2 bg-white text-gray-500">Or continue with</span>
             </div>
           </div>
 
@@ -141,7 +149,7 @@ const Login = () => {
             <Button
               variant="outline"
               onClick={() => handleSocialLogin("Google")}
-              className="flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 border-blue-200 hover:bg-blue-50 text-gray-700"
             >
               <svg
                 width="18"
@@ -150,7 +158,7 @@ const Login = () => {
                 viewBox="0 0 488 512"
               >
                 <path
-                  fill="currentColor"
+                  fill="#4285F4"
                   d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
                 ></path>
               </svg>
@@ -159,14 +167,14 @@ const Login = () => {
             <Button
               variant="outline"
               onClick={() => handleSocialLogin("Apple")}
-              className="flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 border-blue-200 hover:bg-blue-50 text-gray-700"
             >
               <Apple className="h-4 w-4" />
               Apple
             </Button>
           </div>
 
-          <p className="text-center text-xs text-muted-foreground mt-6">
+          <p className="text-center text-xs text-gray-500 mt-6">
             By continuing, you agree to RoadCare's Terms of Service and Privacy Policy.
           </p>
         </div>
