@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { Apple, Mail, Phone, ArrowRight } from "lucide-react";
+import { Apple, Mail, Phone, ArrowRight, User, Building2 } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [userType, setUserType] = useState<"citizen" | "municipal">("citizen");
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -26,10 +27,10 @@ const Login = () => {
       return;
     }
     
-    login(email);
+    login(email, undefined, userType);
     toast({
       title: "Welcome to RoadCare",
-      description: "You have successfully logged in",
+      description: `You have successfully logged in as a ${userType === "citizen" ? "citizen" : "municipal employee"}`,
     });
     navigate("/dashboard");
   };
@@ -45,10 +46,10 @@ const Login = () => {
       return;
     }
     
-    login(undefined, phone);
+    login(undefined, phone, userType);
     toast({
       title: "Welcome to RoadCare",
-      description: "You have successfully logged in",
+      description: `You have successfully logged in as a ${userType === "citizen" ? "citizen" : "municipal employee"}`,
     });
     navigate("/dashboard");
   };
@@ -60,31 +61,53 @@ const Login = () => {
     });
     
     // Mock login for demo
-    login("demo@roadcare.com");
+    login("demo@roadcare.com", undefined, userType);
     navigate("/dashboard");
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-500 to-blue-50 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-600 to-blue-100 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-md">RoadCare</h1>
           <p className="text-white/90 font-medium">Report road issues in Bangalore and track repairs</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-blue-100">
+        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-blue-200">
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-center text-blue-800 mb-4">Choose Account Type</h2>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <Button 
+                variant="outline" 
+                className={`flex flex-col items-center p-4 h-auto gap-2 ${userType === "citizen" ? "bg-blue-100 border-blue-500" : "border-blue-200 hover:bg-blue-50"}`}
+                onClick={() => setUserType("citizen")}
+              >
+                <User className="h-6 w-6 text-blue-600" />
+                <span className="text-sm font-medium">Citizen</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className={`flex flex-col items-center p-4 h-auto gap-2 ${userType === "municipal" ? "bg-blue-100 border-blue-500" : "border-blue-200 hover:bg-blue-50"}`}
+                onClick={() => setUserType("municipal")}
+              >
+                <Building2 className="h-6 w-6 text-blue-600" />
+                <span className="text-sm font-medium">Municipal Employee</span>
+              </Button>
+            </div>
+          </div>
+
           <Tabs defaultValue="email" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6 bg-blue-50">
               <TabsTrigger 
                 value="email" 
-                className="flex items-center gap-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
               >
                 <Mail className="h-4 w-4" />
                 Email
               </TabsTrigger>
               <TabsTrigger 
                 value="phone" 
-                className="flex items-center gap-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
               >
                 <Phone className="h-4 w-4" />
                 Phone
