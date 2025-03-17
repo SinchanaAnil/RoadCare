@@ -1,23 +1,43 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Camera, Upload, Bot, ArrowLeft, CheckCircle } from "lucide-react";
+import { Camera, Upload, Bot, ArrowLeft, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { AIVerificationStatus } from "@/types";
 
+// This component simulates what would normally be done by the backend
 const VerifyRepair = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [repairImage, setRepairImage] = useState<string | null>(null);
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [repairNotes, setRepairNotes] = useState("");
-  const [verificationResult, setVerificationResult] = useState<"approved" | "rejected" | null>(null);
+  const [verificationResult, setVerificationResult] = useState<AIVerificationStatus | null>(null);
+  const [aiAnalysisMessage, setAiAnalysisMessage] = useState<string>("");
+  const [similarityScore, setSimilarityScore] = useState<number | null>(null);
+
+  // Fetch the original report image (simulated)
+  useEffect(() => {
+    // In a real implementation, this would fetch the report data from your API
+    const fetchReportData = async () => {
+      // Simulating API call delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // This would be the image URL from your database
+      // For demo, we're using a placeholder
+      setOriginalImage("/placeholder.svg");
+    };
+    
+    fetchReportData();
+  }, [id]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -38,6 +58,35 @@ const VerifyRepair = () => {
     }, 1000);
   };
 
+  const simulateAIVerification = () => {
+    // This simulates what would be done by the backend AI model you provided
+    // In a real implementation, this would call your backend API
+    
+    // Generate a random score between 0.5 and 0.95 for demo purposes
+    const randomSimilarityScore = Math.random() * 0.45 + 0.5;
+    setSimilarityScore(parseFloat(randomSimilarityScore.toFixed(2)));
+    
+    // Decide the verification result based on the simulated score
+    // This mimics the logic in your analyze_road function
+    let result: AIVerificationStatus;
+    let message: string;
+    
+    if (randomSimilarityScore < 0.7) {
+      result = "approved";
+      message = "✅ Road repair detected! Significant changes were found between the original issue and repair images.";
+    } else if (randomSimilarityScore < 0.85) {
+      // For demo purposes, we'll still sometimes approve partial repairs
+      result = Math.random() > 0.5 ? "approved" : "rejected";
+      message = "⚠️ Partial road repair detected. Some improvements were made but the repair may be incomplete.";
+    } else {
+      result = "rejected";
+      message = "❌ No major changes detected. The AI could not verify that repairs were completed.";
+    }
+    
+    setVerificationResult(result);
+    setAiAnalysisMessage(message);
+  };
+
   const handleVerify = () => {
     if (!repairImage) {
       toast({
@@ -50,19 +99,17 @@ const VerifyRepair = () => {
 
     setIsVerifying(true);
     
-    // Simulate AI verification process
+    // Simulate AI processing time
     setTimeout(() => {
-      // For demo purposes, we'll randomly approve or reject
-      const result = Math.random() > 0.3 ? "approved" : "rejected";
-      setVerificationResult(result);
+      simulateAIVerification();
       setIsVerifying(false);
       
       toast({
-        title: result === "approved" ? "Repair Verified" : "Verification Failed",
-        description: result === "approved" 
+        title: verificationResult === "approved" ? "Repair Verified" : "Verification Failed",
+        description: verificationResult === "approved" 
           ? "AI has verified the repair as complete. The ticket has been closed." 
           : "AI could not verify the repair completion. Please check and try again.",
-        variant: result === "approved" ? "default" : "destructive",
+        variant: verificationResult === "approved" ? "default" : "destructive",
         duration: 5000,
       });
     }, 3000);
@@ -70,6 +117,15 @@ const VerifyRepair = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    
+    if (!repairImage) {
+      toast({
+        title: "Error",
+        description: "Please upload a repair image first",
+        variant: "destructive",
+      });
+      return;
+    }
     
     if (!verificationResult) {
       handleVerify();
@@ -79,7 +135,7 @@ const VerifyRepair = () => {
     // If verified, submit the final repair
     setIsSubmitting(true);
     
-    // Simulate submission
+    // Simulate submission to backend
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
@@ -112,6 +168,15 @@ const VerifyRepair = () => {
       <form onSubmit={handleSubmit}>
         <Card className="p-6 border-blue-200">
           <div className="space-y-6">
+            {originalImage && (
+              <div className="space-y-2">
+                <Label>Original Issue Image</Label>
+                <div className="aspect-video rounded-md overflow-hidden border bg-muted mb-4">
+                  <img src={originalImage} alt="Original Issue" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="repairNotes">Repair Notes</Label>
               <Textarea 
@@ -193,11 +258,46 @@ const VerifyRepair = () => {
                   <Bot className="h-5 w-5" />
                   Verification {verificationResult === "approved" ? "Successful" : "Failed"}
                 </h3>
-                <p className="text-sm mt-1">
-                  {verificationResult === "approved"
-                    ? "Our AI has verified that the repair has been properly completed. The ticket will be closed automatically."
-                    : "Our AI could not verify that the repair has been properly completed. Please check the issue and try again with a clearer image."}
+                <p className="text-sm mt-1 mb-2">
+                  {aiAnalysisMessage}
                 </p>
+                
+                {similarityScore !== null && (
+                  <div className="bg-white/50 rounded p-3 mt-2">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Similarity Score:</span>
+                      <span className="font-medium">{similarityScore}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className={`h-2.5 rounded-full ${
+                          similarityScore < 0.7 
+                            ? "bg-green-500" 
+                            : similarityScore < 0.85 
+                              ? "bg-yellow-500" 
+                              : "bg-red-500"
+                        }`} 
+                        style={{ width: `${100 - similarityScore * 100}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-xs mt-2 text-gray-600">
+                      Lower similarity indicates more changes between images (better chance of repair)
+                    </p>
+                  </div>
+                )}
+                
+                <div className="flex items-center gap-2 mt-3">
+                  {verificationResult === "approved" ? (
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                  ) : (
+                    <XCircle className="h-5 w-5 text-red-600" />
+                  )}
+                  <p className="text-sm font-medium">
+                    {verificationResult === "approved" 
+                      ? "Ticket will be automatically closed"
+                      : "Please submit a clearer image of the completed repair"}
+                  </p>
+                </div>
               </div>
             )}
 
