@@ -14,6 +14,7 @@ import MyReports from "./pages/MyReports";
 import Profile from "./pages/Profile";
 import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
+import VerifyRepairPage from "./pages/VerifyRepairPage";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const AppRoutes = () => {
         <Route path="/my-reports" element={<MyReports />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/stats" element={<Stats />} />
+        <Route path="/verify-repair/:id" element={<VerifyRepairPage />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

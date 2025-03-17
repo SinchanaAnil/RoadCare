@@ -11,6 +11,8 @@ export type ReportCategory =
   | 'sidewalk' 
   | 'other';
 
+export type AIVerificationStatus = 'not_verified' | 'approved' | 'rejected';
+
 export interface ReportComment {
   id: string;
   author: string;
@@ -33,4 +35,8 @@ export interface Report {
   comments?: ReportComment[];
   lat?: number;
   lng?: number;
+  aiVerificationStatus?: AIVerificationStatus;
+  repairImageUrl?: string;
+  repairDate?: string;
+  assignedEmployee?: string;
 }

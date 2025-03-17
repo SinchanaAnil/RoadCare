@@ -1,9 +1,9 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MapPin, ThumbsUp, AlertCircle, Clock, Check } from "lucide-react";
+import { MapPin, ThumbsUp, AlertCircle, Clock, Check, Bot } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 type Report = {
   id: string;
@@ -17,6 +17,8 @@ type Report = {
   severity: string;
   lat: number;
   lng: number;
+  aiVerificationStatus?: "not_verified" | "approved" | "rejected";
+  repairImageUrl?: string;
 };
 
 type ReportsListProps = {
@@ -24,6 +26,9 @@ type ReportsListProps = {
 };
 
 const ReportsList = ({ reports }: ReportsListProps) => {
+  const { user } = useAuth();
+  const isMunicipal = user?.userType === "municipal";
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
@@ -77,6 +82,36 @@ const ReportsList = ({ reports }: ReportsListProps) => {
     }
   };
 
+  const getAiVerificationBadge = (status?: string) => {
+    if (!status) return null;
+    
+    switch (status) {
+      case 'approved':
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">
+            <Bot className="h-3 w-3 mr-1" />
+            AI Verified
+          </Badge>
+        );
+      case 'rejected':
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-700 border-red-200">
+            <Bot className="h-3 w-3 mr-1" />
+            AI Rejected
+          </Badge>
+        );
+      case 'not_verified':
+        return (
+          <Badge variant="outline" className="bg-gray-100 text-gray-700 border-gray-200">
+            <Bot className="h-3 w-3 mr-1" />
+            Pending AI Verification
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="space-y-4">
       {reports.length === 0 ? (
@@ -107,6 +142,7 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                   <Badge variant="outline" className="bg-background border-input">
                     {report.category}
                   </Badge>
+                  {report.aiVerificationStatus && getAiVerificationBadge(report.aiVerificationStatus)}
                 </div>
               </div>
               <div className="flex md:flex-col items-center gap-2 md:border-l md:pl-4">
@@ -117,6 +153,16 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                 <Button variant="outline" size="sm" asChild>
                   <Link to={`/report/${report.id}`}>Details</Link>
                 </Button>
+                {isMunicipal && report.status !== "completed" && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200"
+                    asChild
+                  >
+                    <Link to={`/verify-repair/${report.id}`}>Submit Repair</Link>
+                  </Button>
+                )}
               </div>
             </div>
           </Card>
