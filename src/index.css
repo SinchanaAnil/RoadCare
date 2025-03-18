@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,6 +96,24 @@
   }
 }
 
+/* Login page animations and styles */
+.active .form-container {
+  transform: translateX(100%);
+}
+
+.active .toggle {
+  transform: translateX(50%);
+}
+
+.active .toggle-left {
+  transform: translateX(0);
+}
+
+.active .toggle-right {
+  transform: translateX(200%);
+}
+
+/* Original styles */
 .map-container {
   width: 100%;
   height: 100%;
