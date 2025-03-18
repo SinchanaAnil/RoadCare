@@ -56,7 +56,7 @@ const MapView = ({ reports }: MapViewProps) => {
     mapboxgl.accessToken = mapToken;
     
     // Center on Bangalore, India
-    const defaultCenter = [77.5946, 12.9716]; // Bangalore coordinates
+    const defaultCenter: [number, number] = [77.5946, 12.9716]; // Bangalore coordinates
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -108,7 +108,7 @@ const MapView = ({ reports }: MapViewProps) => {
         
         // Create the marker and add to map
         const marker = new mapboxgl.Marker(el)
-          .setLngLat([report.lng, report.lat])
+          .setLngLat([report.lng, report.lat] as [number, number])
           .addTo(map.current!);
           
         // Add click handler
