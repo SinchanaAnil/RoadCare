@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,30 +8,202 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Camera, Upload, MapPin, Check } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Camera, Upload, MapPin, Check, Search } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix Leaflet icon issue
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
+
+// LocationPicker component for the map dialog
+const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelect: (lat: number, lng: number, address: string) => void, initialLocation?: [number, number] }) => {
+  const [position, setPosition] = useState<[number, number] | null>(initialLocation || null);
+  const [searchInput, setSearchInput] = useState('');
+  const mapRef = useRef<L.Map | null>(null);
+  
+  // Default center on Bangalore
+  const defaultCenter: [number, number] = [12.9716, 77.5946];
+  
+  // MapEvents component to handle map clicks
+  const MapClickHandler = () => {
+    useMapEvents({
+      click: async (e) => {
+        const { lat, lng } = e.latlng;
+        setPosition([lat, lng]);
+        
+        try {
+          // Reverse geocoding with Nominatim
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+          const data = await response.json();
+          
+          if (data && data.display_name) {
+            onLocationSelect(lat, lng, data.display_name);
+          } else {
+            onLocationSelect(lat, lng, `${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+          }
+        } catch (error) {
+          console.error('Error getting address:', error);
+          onLocationSelect(lat, lng, `${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+        }
+      },
+    });
+    
+    return null;
+  };
+  
+  // Function to search for a location
+  const handleSearch = async () => {
+    if (!searchInput.trim()) return;
+    
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}&limit=1`);
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        const lat = parseFloat(data[0].lat);
+        const lng = parseFloat(data[0].lon);
+        
+        setPosition([lat, lng]);
+        mapRef.current?.setView([lat, lng], 16);
+        onLocationSelect(lat, lng, data[0].display_name);
+      } else {
+        // Location not found
+        console.log('Location not found');
+      }
+    } catch (error) {
+      console.error('Error searching for location:', error);
+    }
+  };
+  
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex gap-2 p-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-2 top-2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search for a location..."
+            className="pl-8"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          />
+        </div>
+        <Button onClick={handleSearch}>Search</Button>
+      </div>
+      
+      <div className="relative flex-1 min-h-[400px]">
+        <MapContainer 
+          center={position || defaultCenter} 
+          zoom={13} 
+          style={{ height: '100%', width: '100%' }}
+          ref={mapRef}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          
+          {position && (
+            <Marker position={position} />
+          )}
+          
+          <MapClickHandler />
+        </MapContainer>
+      </div>
+      
+      <div className="p-3 text-sm">
+        <p><strong>Selected Location:</strong> {position ? `${position[0].toFixed(6)}, ${position[1].toFixed(6)}` : 'None'}</p>
+        <p className="text-xs text-muted-foreground">Click anywhere on the map to select a location</p>
+      </div>
+    </div>
+  );
+};
 
 const ReportIssue = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [location, setLocation] = useState('');
+  const [currentCoords, setCurrentCoords] = useState<[number, number] | null>(null);
   const [fetchingLocation, setFetchingLocation] = useState(false);
   const [severity, setSeverity] = useState([5]);
   const [images, setImages] = useState<string[]>([]);
+  const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
 
   const handleFetchLocation = () => {
     setFetchingLocation(true);
-    // Simulate location fetching
-    setTimeout(() => {
-      setLocation('Example Street, City');
+    
+    // Use browser's geolocation API
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setCurrentCoords([lat, lng]);
+          
+          try {
+            // Reverse geocoding with Nominatim
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+            const data = await response.json();
+            
+            if (data && data.display_name) {
+              setLocation(data.display_name);
+            } else {
+              setLocation(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+            }
+            
+            setFetchingLocation(false);
+            toast({
+              title: "Location detected",
+              description: "Your current location has been detected successfully.",
+              duration: 3000,
+            });
+          } catch (error) {
+            console.error('Error getting address:', error);
+            setLocation(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+            setFetchingLocation(false);
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setFetchingLocation(false);
+          toast({
+            title: "Location error",
+            description: "Unable to detect your location. Please enter it manually.",
+            variant: "destructive",
+            duration: 3000,
+          });
+        }
+      );
+    } else {
       setFetchingLocation(false);
       toast({
-        title: "Location detected",
-        description: "Your current location has been detected successfully.",
+        title: "Location not supported",
+        description: "Your browser doesn't support geolocation. Please enter location manually.",
+        variant: "destructive",
         duration: 3000,
       });
-    }, 1500);
+    }
+  };
+
+  const handleLocationSelect = (lat: number, lng: number, address: string) => {
+    setCurrentCoords([lat, lng]);
+    setLocation(address);
+    setIsMapDialogOpen(false);
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,6 +287,14 @@ const ReportIssue = () => {
                   required 
                   className="flex-1"
                 />
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsMapDialogOpen(true)}
+                >
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Pick on Map
+                </Button>
                 <Button 
                   type="button" 
                   variant="outline" 
@@ -236,6 +416,17 @@ const ReportIssue = () => {
           </div>
         </Card>
       </form>
+
+      {/* Map Dialog for selecting location */}
+      <Dialog open={isMapDialogOpen} onOpenChange={setIsMapDialogOpen}>
+        <DialogContent className="sm:max-w-[600px] h-[600px] p-0 overflow-hidden">
+          <DialogTitle className="p-4 pb-0">Select Location on Map</DialogTitle>
+          <DialogDescription className="px-4 pt-0">
+            Click anywhere on the map to select a location or search for an address
+          </DialogDescription>
+          <LocationPicker onLocationSelect={handleLocationSelect} initialLocation={currentCoords || undefined} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
