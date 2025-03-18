@@ -44,7 +44,7 @@ const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
       />
       <button 
         type="submit" 
-        className="bg-[#2da0a8] text-white px-10 py-2.5 rounded-lg text-sm font-semibold uppercase tracking-wider border border-transparent w-full"
+        className="bg-[#F97316] text-white px-10 py-2.5 rounded-lg text-sm font-semibold uppercase tracking-wider border border-transparent w-full hover:bg-[#f97316]/90"
       >
         Continue with Phone
       </button>

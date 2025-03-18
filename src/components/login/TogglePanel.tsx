@@ -9,7 +9,7 @@ type TogglePanelProps = {
 const TogglePanel = ({ toggleUserType, activeSide }: TogglePanelProps) => {
   return (
     <div className="toggle-container absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-all duration-600 ease-in-out rounded-l-[150px] z-10">
-      <div className="toggle bg-gradient-to-r from-[#5c6bc0] to-[#2da0a8] text-white relative left-[-100%] h-full w-[200%] transition-all duration-600 ease-in-out">
+      <div className="toggle bg-gradient-to-r from-[#0EA5E9] to-[#F97316] text-white relative left-[-100%] h-full w-[200%] transition-all duration-600 ease-in-out">
         {/* Left Toggle Panel (hidden by default) */}
         <div className="toggle-panel toggle-left absolute w-1/2 h-full flex flex-col items-center justify-center p-8 text-center transform -translate-x-[200%] transition-all duration-600 ease-in-out">
           <h1 className="text-2xl font-bold mb-2">Citizen Login</h1>

@@ -27,14 +27,14 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
             <TabsList className="grid w-full grid-cols-2 mb-4 bg-gray-100 rounded-md">
               <TabsTrigger 
                 value="email" 
-                className="flex items-center gap-2 data-[state=active]:bg-[#2da0a8] data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-[#0EA5E9] data-[state=active]:text-white"
               >
                 <Mail className="h-4 w-4" />
                 Email
               </TabsTrigger>
               <TabsTrigger 
                 value="phone" 
-                className="flex items-center gap-2 data-[state=active]:bg-[#2da0a8] data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-[#0EA5E9] data-[state=active]:text-white"
               >
                 <Phone className="h-4 w-4" />
                 Phone
