@@ -6,8 +6,8 @@ const Footer = () => {
     <footer className="w-full border-t bg-background">
       <div className="container flex flex-col md:flex-row items-center justify-between py-6 gap-4">
         <div className="flex items-center gap-1 text-lg font-bold">
-          <span className="text-fixit-primary">FixIt</span>
-          <span className="text-fixit-accent">Tracker</span>
+          <span className="text-fixit-primary">Road</span>
+          <span className="text-fixit-accent">Care</span>
         </div>
         <nav className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <Link to="/about" className="hover:text-foreground transition-colors">
@@ -24,7 +24,7 @@ const Footer = () => {
           </Link>
         </nav>
         <div className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} FixItTracker. All rights reserved.
+          &copy; {new Date().getFullYear()} RoadCare. All rights reserved.
         </div>
       </div>
     </footer>
