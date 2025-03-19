@@ -11,7 +11,7 @@ import { Slider } from '@/components/ui/slider';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Camera, Upload, MapPin, Check, Search } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -34,8 +34,8 @@ const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelec
   const [searchInput, setSearchInput] = useState('');
   const mapRef = useRef<L.Map | null>(null);
   
-  // Default center on Bangalore
-  const defaultCenter: [number, number] = [12.9716, 77.5946];
+  // Default center on India
+  const defaultCenter: [number, number] = [20, 78];
   
   // MapEvents component to handle map clicks
   const MapClickHandler = () => {
@@ -77,7 +77,9 @@ const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelec
         const lng = parseFloat(data[0].lon);
         
         setPosition([lat, lng]);
-        mapRef.current?.setView([lat, lng], 16);
+        if (mapRef.current) {
+          mapRef.current.setView([lat, lng], 15);
+        }
         onLocationSelect(lat, lng, data[0].display_name);
       } else {
         // Location not found
@@ -86,6 +88,19 @@ const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelec
     } catch (error) {
       console.error('Error searching for location:', error);
     }
+  };
+  
+  // Function to set map reference
+  const SetMapRef = () => {
+    const map = useMap();
+    
+    useEffect(() => {
+      if (map) {
+        mapRef.current = map;
+      }
+    }, [map]);
+    
+    return null;
   };
   
   return (
@@ -108,13 +123,16 @@ const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelec
       <div className="relative flex-1 min-h-[400px]">
         <MapContainer 
           center={position || defaultCenter} 
-          zoom={13} 
+          zoom={5} 
           style={{ height: '100%', width: '100%' }}
-          ref={mapRef}
+          preferCanvas={true}
+          zoomAnimation={false}
+          inertia={true}
+          inertiaDeceleration={2000}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           />
           
           {position && (
@@ -122,6 +140,7 @@ const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelec
           )}
           
           <MapClickHandler />
+          <SetMapRef />
         </MapContainer>
       </div>
       

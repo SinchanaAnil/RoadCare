@@ -57,8 +57,8 @@ const MapView = ({ reports }: MapViewProps) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState<[number, number] | null>(null);
   
-  // Bangalore center coordinates as default
-  const defaultCenter: [number, number] = [12.9716, 77.5946];
+  // Default center coordinates for India
+  const defaultCenter: [number, number] = [20, 78];
   
   const handleSearch = async () => {
     if (!searchInput.trim()) return;
@@ -130,13 +130,17 @@ const MapView = ({ reports }: MapViewProps) => {
       <div className="absolute inset-0 rounded-md overflow-hidden">
         <MapContainer 
           center={defaultCenter} 
-          zoom={11} 
+          zoom={5} 
           style={{ height: '100%', width: '100%' }}
           attributionControl={false}
+          preferCanvas={true}
+          zoomAnimation={false}
+          inertia={true}
+          inertiaDeceleration={2000}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           />
           
           {reports.map((report) => (
