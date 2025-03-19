@@ -30,7 +30,8 @@ const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
       title: "Welcome to RoadCare",
       description: `You have successfully logged in as a ${userType === "citizen" ? "citizen" : "municipal employee"}`,
     });
-    navigate("/dashboard");
+    // Route to correct dashboard based on user type
+    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
   return (

@@ -18,18 +18,25 @@ import VerifyRepairPage from "./pages/VerifyRepairPage";
 
 const queryClient = new QueryClient();
 
-// Protected route wrapper
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+// Protected route wrapper that also checks user type
+const ProtectedRoute = ({ children, requiredUserType }: { children: React.ReactNode, requiredUserType?: "citizen" | "municipal" }) => {
+  const { isAuthenticated, user } = useAuth();
   
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
+  }
+  
+  // If a specific user type is required and user doesn't match, redirect to appropriate dashboard
+  if (requiredUserType && user?.userType !== requiredUserType) {
+    return <Navigate to={user?.userType === "citizen" ? "/dashboard" : "/municipal-dashboard"} replace />;
   }
   
   return <>{children}</>;
 };
 
 const AppRoutes = () => {
+  const { user } = useAuth();
+  
   return (
     <Routes>
       <Route path="/" element={<Login />} />
@@ -38,13 +45,43 @@ const AppRoutes = () => {
           <Layout />
         </ProtectedRoute>
       }>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/report" element={<ReportIssue />} />
-        <Route path="/report-success" element={<ReportSuccess />} />
-        <Route path="/my-reports" element={<MyReports />} />
+        {/* Citizen routes */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute requiredUserType="citizen">
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/report" element={
+          <ProtectedRoute requiredUserType="citizen">
+            <ReportIssue />
+          </ProtectedRoute>
+        } />
+        <Route path="/report-success" element={
+          <ProtectedRoute requiredUserType="citizen">
+            <ReportSuccess />
+          </ProtectedRoute>
+        } />
+        <Route path="/my-reports" element={
+          <ProtectedRoute requiredUserType="citizen">
+            <MyReports />
+          </ProtectedRoute>
+        } />
+        
+        {/* Municipal employee routes */}
+        <Route path="/municipal-dashboard" element={
+          <ProtectedRoute requiredUserType="municipal">
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/verify-repair/:id" element={
+          <ProtectedRoute requiredUserType="municipal">
+            <VerifyRepairPage />
+          </ProtectedRoute>
+        } />
+        
+        {/* Common routes for both user types */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/stats" element={<Stats />} />
-        <Route path="/verify-repair/:id" element={<VerifyRepairPage />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

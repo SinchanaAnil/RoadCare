@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -33,7 +32,8 @@ const Login = () => {
     // Use Sonner toast for a more modern look
     sonnerToast.success(`Welcome to RoadCare! Logged in as ${userType === "citizen" ? "citizen" : "municipal employee"}`);
     
-    navigate("/dashboard");
+    // Route to correct dashboard based on user type
+    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
   const handlePhoneLogin = (e: React.FormEvent) => {
@@ -52,7 +52,8 @@ const Login = () => {
     // Use Sonner toast for a more modern look
     sonnerToast.success(`Welcome to RoadCare! Logged in as ${userType === "citizen" ? "citizen" : "municipal employee"}`);
     
-    navigate("/dashboard");
+    // Route to correct dashboard based on user type
+    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
   const handleSocialLogin = (provider: string) => {
@@ -60,9 +61,11 @@ const Login = () => {
       description: `${provider} login integration will be implemented soon`,
     });
     
-    // Mock login for demo
+    // Mock login for demo with correct user type
     login("demo@roadcare.com", undefined, userType);
-    navigate("/dashboard");
+    
+    // Route to correct dashboard based on user type
+    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
   return (
