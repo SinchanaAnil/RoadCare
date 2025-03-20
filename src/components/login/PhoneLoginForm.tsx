@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 
 type PhoneLoginFormProps = {
   userType: "citizen" | "municipal";
@@ -26,10 +27,10 @@ const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
     }
     
     login(undefined, phone, userType);
-    toast({
-      title: "Welcome to RoadCare",
-      description: `You have successfully logged in as a ${userType === "citizen" ? "citizen" : "municipal employee"}`,
-    });
+    
+    // Show specific welcome message based on user type
+    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+    
     // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };

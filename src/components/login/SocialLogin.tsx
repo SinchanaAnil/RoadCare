@@ -1,7 +1,8 @@
 
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast as sonnerToast } from "sonner";
 
 type SocialLoginProps = {
   userType: "citizen" | "municipal";
@@ -10,6 +11,7 @@ type SocialLoginProps = {
 const SocialLogin = ({ userType }: SocialLoginProps) => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { toast } = useToast();
 
   const handleSocialLogin = (provider: string) => {
     toast({
@@ -19,7 +21,12 @@ const SocialLogin = ({ userType }: SocialLoginProps) => {
     
     // Mock login for demo
     login("demo@roadcare.com", undefined, userType);
-    navigate("/dashboard");
+    
+    // Show specific welcome message based on user type
+    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+    
+    // Route to correct dashboard based on user type
+    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
   return (

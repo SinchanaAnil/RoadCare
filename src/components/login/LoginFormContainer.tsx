@@ -18,7 +18,7 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
           <p className="text-sm text-gray-600">
             {userType === "citizen" 
               ? "Login as a citizen to report and track road issues" 
-              : "Login as municipal staff to manage road issues"}
+              : "Login as administrative staff to manage road issues"}
           </p>
         </div>
         

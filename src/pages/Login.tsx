@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -29,8 +30,8 @@ const Login = () => {
     
     login(email, undefined, userType);
     
-    // Use Sonner toast for a more modern look
-    sonnerToast.success(`Welcome to RoadCare! Logged in as ${userType === "citizen" ? "citizen" : "municipal employee"}`);
+    // Use Sonner toast for a more modern look with welcome message based on user type
+    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
     
     // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
@@ -49,8 +50,8 @@ const Login = () => {
     
     login(undefined, phone, userType);
     
-    // Use Sonner toast for a more modern look
-    sonnerToast.success(`Welcome to RoadCare! Logged in as ${userType === "citizen" ? "citizen" : "municipal employee"}`);
+    // Use Sonner toast for a more modern look with welcome message based on user type
+    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
     
     // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
@@ -63,6 +64,9 @@ const Login = () => {
     
     // Mock login for demo with correct user type
     login("demo@roadcare.com", undefined, userType);
+    
+    // Show welcome message based on user type
+    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
     
     // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
@@ -94,7 +98,7 @@ const Login = () => {
                 onClick={() => setUserType("municipal")}
               >
                 <Building2 className="h-6 w-6 text-[#0EA5E9]" />
-                <span className="text-sm font-medium">Municipal Employee</span>
+                <span className="text-sm font-medium">Administrative</span>
               </Button>
             </div>
           </div>

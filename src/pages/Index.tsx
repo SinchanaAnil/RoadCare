@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { toast as sonnerToast } from "sonner";
 
 const Index = () => {
   const { isAuthenticated, user } = useAuth();
@@ -11,6 +12,8 @@ const Index = () => {
   useEffect(() => {
     // Redirect authenticated users to appropriate dashboard
     if (isAuthenticated) {
+      // Show welcome message based on user type when redirecting from index
+      sonnerToast.success(user?.userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
       navigate(user?.userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
     }
   }, [isAuthenticated, user, navigate]);
