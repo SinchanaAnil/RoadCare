@@ -91,7 +91,14 @@ const Home = () => {
         <div className="lg:col-span-2">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h1 className="text-2xl font-bold">Road Issue Tracker</h1>
+              <div className="flex items-center">
+                <img 
+                  src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+                  alt="RoadCare Logo" 
+                  className="h-8 w-auto mr-3"
+                />
+                <h1 className="text-2xl font-bold">Road Issue Tracker</h1>
+              </div>
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -139,7 +146,10 @@ const Home = () => {
         
         <div>
           <div className="flex flex-col gap-4">
-            <h2 className="text-xl font-semibold">Issue Summary</h2>
+            <div className="flex items-center">
+              <h2 className="text-xl font-semibold">Issue Summary</h2>
+              <p className="text-xs text-[#0EA5E9] ml-2">Report. Repair. Repeat.</p>
+            </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
               <Card className="p-4 bg-fixit-primary/10 border-fixit-primary/20">

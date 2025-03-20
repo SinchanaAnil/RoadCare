@@ -14,7 +14,15 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
     <div className="form-container w-1/2 h-full absolute top-0 left-0 z-2 transition-all duration-600 ease-in-out">
       <div className="w-full h-full flex flex-col items-center justify-center p-8">
         <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold mb-2">RoadCare</h1>
+          <div className="flex flex-col items-center">
+            <img 
+              src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+              alt="RoadCare Logo" 
+              className="w-32 h-auto mb-2"
+            />
+            <h1 className="text-2xl font-bold mb-1">RoadCare</h1>
+            <p className="text-xs text-[#0EA5E9] mb-2">Report. Repair. Repeat.</p>
+          </div>
           <p className="text-sm text-gray-600">
             {userType === "citizen" 
               ? "Login as a citizen to report and track road issues" 

@@ -75,9 +75,13 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#0EA5E9] to-[#0056b3] p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-md">RoadCare</h1>
-          <p className="text-white/90 font-medium">Report road issues and track repairs efficiently</p>
+        <div className="text-center mb-6">
+          <img 
+            src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+            alt="RoadCare Logo" 
+            className="w-48 h-auto mx-auto mb-4"
+          />
+          <p className="text-white/90 text-sm font-medium">Report. Repair. Repeat.</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-blue-200 transition-all duration-300 hover:shadow-2xl">

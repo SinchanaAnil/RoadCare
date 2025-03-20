@@ -19,13 +19,21 @@ const Index = () => {
   }, [isAuthenticated, user, navigate]);
 
   const handleGetStarted = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#0EA5E9] to-[#0056b3] p-4">
       <div className="text-center max-w-2xl">
-        <h1 className="text-5xl font-bold mb-6 text-white drop-shadow-md">Welcome to RoadCare</h1>
+        <div className="flex flex-col items-center mb-6">
+          <img 
+            src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+            alt="RoadCare Logo" 
+            className="w-64 h-auto mb-4"
+          />
+          <h1 className="text-4xl font-bold text-white drop-shadow-md">Welcome to RoadCare</h1>
+          <p className="text-xl text-white/90 mt-2">Report. Repair. Repeat.</p>
+        </div>
         <p className="text-xl text-white/90 mb-8">Report road issues and track repairs efficiently</p>
         <Button 
           onClick={handleGetStarted}
