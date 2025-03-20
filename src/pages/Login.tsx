@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -30,10 +29,8 @@ const Login = () => {
     
     login(email, undefined, userType);
     
-    // Use Sonner toast for a more modern look with welcome message based on user type
     sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
     
-    // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
@@ -50,10 +47,8 @@ const Login = () => {
     
     login(undefined, phone, userType);
     
-    // Use Sonner toast for a more modern look with welcome message based on user type
     sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
     
-    // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
@@ -62,13 +57,10 @@ const Login = () => {
       description: `${provider} login integration will be implemented soon`,
     });
     
-    // Mock login for demo with correct user type
     login("demo@roadcare.com", undefined, userType);
     
-    // Show welcome message based on user type
     sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
     
-    // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
   };
 
@@ -79,9 +71,8 @@ const Login = () => {
           <img 
             src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
             alt="RoadCare Logo" 
-            className="w-48 h-auto mx-auto mb-4"
+            className="w-48 h-auto mx-auto mb-4 rounded-lg shadow-md"
           />
-          <p className="text-white/90 text-sm font-medium">Report. Repair. Repeat.</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-blue-200 transition-all duration-300 hover:shadow-2xl">

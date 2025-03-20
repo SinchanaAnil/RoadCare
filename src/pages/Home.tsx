@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import ReportsList from '@/components/reports/ReportsList';
 import MapView from '@/components/map/MapView';
 
-// Mock data for demonstration
 const mockReports = [
   {
     id: '1',
@@ -70,7 +68,6 @@ const Home = () => {
   const [filteredReports, setFilteredReports] = useState(mockReports);
 
   useEffect(() => {
-    // Filter reports based on search query
     if (searchQuery.trim() === '') {
       setFilteredReports(mockReports);
     } else {
@@ -95,7 +92,7 @@ const Home = () => {
                 <img 
                   src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
                   alt="RoadCare Logo" 
-                  className="h-8 w-auto mr-3"
+                  className="h-8 w-auto mr-3 rounded-md"
                 />
                 <h1 className="text-2xl font-bold">Road Issue Tracker</h1>
               </div>
@@ -148,7 +145,6 @@ const Home = () => {
           <div className="flex flex-col gap-4">
             <div className="flex items-center">
               <h2 className="text-xl font-semibold">Issue Summary</h2>
-              <p className="text-xs text-[#0EA5E9] ml-2">Report. Repair. Repeat.</p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">

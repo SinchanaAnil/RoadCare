@@ -29,10 +29,9 @@ const Index = () => {
           <img 
             src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
             alt="RoadCare Logo" 
-            className="w-64 h-auto mb-4"
+            className="w-64 h-auto mb-4 rounded-lg shadow-md"
           />
           <h1 className="text-4xl font-bold text-white drop-shadow-md">Welcome to RoadCare</h1>
-          <p className="text-xl text-white/90 mt-2">Report. Repair. Repeat.</p>
         </div>
         <p className="text-xl text-white/90 mb-8">Report road issues and track repairs efficiently</p>
         <Button 
