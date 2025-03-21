@@ -70,11 +70,11 @@ const Login = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/lovable-uploads/699255ca-9aff-4587-8b6c-fc1b70acefc1.png" 
+          src="/lovable-uploads/85984af7-4521-4216-9498-58d3ea77a8a5.png" 
           alt="RoadCare Background" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/80 to-[#0056b3]/80"></div>
+        <div className="absolute inset-0 bg-[#F4F4F4]/40"></div>
       </div>
       
       <div className="w-full max-w-md z-10">
@@ -84,8 +84,8 @@ const Login = () => {
             alt="RoadCare Logo" 
             className="w-48 h-auto mx-auto mb-4 rounded-lg shadow-md"
           />
-          <h2 className="text-2xl font-bold text-white drop-shadow-md">RoadCare</h2>
-          <p className="text-white/90 text-sm">Report road issues and track repairs efficiently</p>
+          <h2 className="text-2xl font-bold text-[#333333] drop-shadow-md">RoadCare</h2>
+          <p className="text-[#333333]/90 text-sm">Report road issues and track repairs efficiently</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-[#3498DB]/20 transition-all duration-300 hover:shadow-2xl backdrop-blur-sm bg-white/95">

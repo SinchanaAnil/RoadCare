@@ -27,11 +27,11 @@ const Index = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/lovable-uploads/699255ca-9aff-4587-8b6c-fc1b70acefc1.png" 
+          src="/lovable-uploads/85984af7-4521-4216-9498-58d3ea77a8a5.png" 
           alt="RoadCare Background" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#3498DB]/80 to-[#0056b3]/80"></div>
+        <div className="absolute inset-0 bg-[#F4F4F4]/40"></div>
       </div>
 
       <div className="text-center max-w-2xl z-10">
@@ -41,9 +41,9 @@ const Index = () => {
             alt="RoadCare Logo" 
             className="w-64 h-auto mb-4 rounded-lg shadow-md"
           />
-          <h1 className="text-4xl font-bold text-white drop-shadow-md">Welcome to RoadCare</h1>
+          <h1 className="text-4xl font-bold text-[#333333] drop-shadow-md">Welcome to RoadCare</h1>
         </div>
-        <p className="text-xl text-white/90 mb-8">Report road issues and track repairs efficiently</p>
+        <p className="text-xl text-[#333333]/90 mb-8">Report road issues and track repairs efficiently</p>
         <Button 
           onClick={handleGetStarted}
           size="lg" 
