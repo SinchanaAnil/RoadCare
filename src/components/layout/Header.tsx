@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { MapPin, Menu, AlertCircle, User, BarChart3, Clock } from "lucide-react";
+import { MapPin, Menu, AlertCircle, User, BarChart3, Clock, MessageSquare } from "lucide-react";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +64,14 @@ const Header = () => {
                     <span>Statistics</span>
                   </Link>
                   <Link
+                    to="/community"
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={closeSheet}
+                  >
+                    <MessageSquare size={18} />
+                    <span>Community</span>
+                  </Link>
+                  <Link
                     to="/profile"
                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
                     onClick={closeSheet}
@@ -108,6 +116,13 @@ const Header = () => {
           >
             <BarChart3 size={18} />
             <span>Statistics</span>
+          </Link>
+          <Link
+            to="/community"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <MessageSquare size={18} />
+            <span>Community</span>
           </Link>
         </nav>
         <div className="flex items-center gap-2">
