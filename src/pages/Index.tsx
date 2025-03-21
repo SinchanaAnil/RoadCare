@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { toast as sonnerToast } from "sonner";
+import LoginBackground from "@/components/login/LoginBackground";
 
 const Index = () => {
   const { isAuthenticated, user } = useAuth();
@@ -24,15 +25,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="/lovable-uploads/85984af7-4521-4216-9498-58d3ea77a8a5.png" 
-          alt="RoadCare Background" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-[#F4F4F4]/40"></div>
-      </div>
+      <LoginBackground />
 
       <div className="text-center max-w-2xl z-10">
         <div className="flex flex-col items-center mb-6">
