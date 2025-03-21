@@ -52,6 +52,19 @@ const FlyToLocation = ({ searchResult }: { searchResult: [number, number] | null
   return null;
 };
 
+// Add Bangalore focus
+const BangaloreFocus = () => {
+  const map = useMap();
+  
+  useEffect(() => {
+    // Bangalore coordinates
+    const bangaloreCoords: [number, number] = [12.9716, 77.5946];
+    map.setView(bangaloreCoords, 12);
+  }, [map]);
+  
+  return null;
+};
+
 const MapView = ({ reports }: MapViewProps) => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [searchInput, setSearchInput] = useState('');
@@ -65,13 +78,12 @@ const MapView = ({ reports }: MapViewProps) => {
     
     try {
       // Using Nominatim for geocoding (OpenStreetMap's free geocoding service)
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}&limit=1`);
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}, Bangalore&limit=1`);
       const data = await response.json();
       
       if (data && data.length > 0) {
         setSearchResult([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
       } else {
-        // Show error or notification that location wasn't found
         console.log('Location not found');
       }
     } catch (error) {
@@ -79,27 +91,32 @@ const MapView = ({ reports }: MapViewProps) => {
     }
   };
 
-  // Function to create custom marker icons based on report status
-  const getMarkerIcon = (status: string) => {
+  // Function to create custom marker icons based on report severity
+  const getMarkerIcon = (severity: string) => {
     let color;
-    let icon;
     
-    if (status === 'pending') {
-      color = 'var(--fixit-primary)';
-      icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>';
-    } else if (status === 'in-progress') {
-      color = 'var(--fixit-warning)';
-      icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+    if (severity === 'high') {
+      color = '#E74C3C'; // Red for high severity
+    } else if (severity === 'medium') {
+      color = '#3498DB'; // Blue for medium severity
     } else {
-      color = 'var(--fixit-success)';
-      icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      color = '#2ECC71'; // Green for low severity
     }
     
     return L.divIcon({
-      className: 'custom-div-icon',
-      html: `<div style="background-color: ${color}; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">${icon}</div>`,
-      iconSize: [30, 30],
-      iconAnchor: [15, 15]
+      className: 'custom-pin-icon',
+      html: `
+        <div style="position: relative;">
+          <svg width="24" height="36" viewBox="0 0 24 36">
+            <path d="M12 0C5.383 0 0 5.383 0 12c0 9 12 24 12 24s12-15 12-24c0-6.617-5.383-12-12-12z" 
+                  fill="${color}" />
+            <circle cx="12" cy="12" r="6" fill="white" />
+          </svg>
+        </div>
+      `,
+      iconSize: [24, 36],
+      iconAnchor: [12, 36],
+      popupAnchor: [0, -36]
     });
   };
 
@@ -111,7 +128,7 @@ const MapView = ({ reports }: MapViewProps) => {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search for a location..."
+            placeholder="Search for a location in Bangalore..."
             className="pl-8 pr-4 h-10 w-full bg-white/90 backdrop-blur-sm"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
@@ -120,7 +137,7 @@ const MapView = ({ reports }: MapViewProps) => {
         </div>
         <Button 
           onClick={handleSearch}
-          className="h-10"
+          className="h-10 bg-[#3498DB] hover:bg-[#3498DB]/90"
         >
           Search
         </Button>
@@ -147,7 +164,7 @@ const MapView = ({ reports }: MapViewProps) => {
             <Marker 
               key={report.id}
               position={[report.lat, report.lng]}
-              icon={getMarkerIcon(report.status)}
+              icon={getMarkerIcon(report.severity)}
               eventHandlers={{
                 click: () => setSelectedReport(report),
               }}
@@ -155,6 +172,7 @@ const MapView = ({ reports }: MapViewProps) => {
           ))}
           
           <FlyToLocation searchResult={searchResult} />
+          <BangaloreFocus />
         </MapContainer>
       </div>
       
@@ -178,11 +196,11 @@ const MapView = ({ reports }: MapViewProps) => {
             </div>
             <div className="flex justify-between items-center">
               <span className={`text-xs px-2 py-1 rounded-full
-                ${selectedReport.status === 'pending' ? 'bg-fixit-primary/10 text-fixit-primary' : 
-                  selectedReport.status === 'in-progress' ? 'bg-fixit-warning/10 text-fixit-warning' : 
-                  'bg-fixit-success/10 text-fixit-success'}`}>
-                {selectedReport.status === 'pending' ? 'Pending' :
-                  selectedReport.status === 'in-progress' ? 'In Progress' : 'Completed'}
+                ${selectedReport.severity === 'high' ? 'bg-[#E74C3C]/10 text-[#E74C3C]' : 
+                  selectedReport.severity === 'medium' ? 'bg-[#3498DB]/10 text-[#3498DB]' : 
+                  'bg-[#2ECC71]/10 text-[#2ECC71]'}`}>
+                {selectedReport.severity === 'high' ? 'High Priority' :
+                  selectedReport.severity === 'medium' ? 'Medium Priority' : 'Low Priority'}
               </span>
               <span className="text-xs text-muted-foreground">
                 Reported: {new Date(selectedReport.date).toLocaleDateString()}

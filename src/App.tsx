@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
 import VerifyRepairPage from "./pages/VerifyRepairPage";
+import Community from "./pages/Community";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,7 @@ const AppRoutes = () => {
         {/* Common routes for both user types */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/stats" element={<Stats />} />
+        <Route path="/community" element={<Community />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

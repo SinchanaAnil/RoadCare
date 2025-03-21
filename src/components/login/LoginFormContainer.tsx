@@ -20,9 +20,9 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
               alt="RoadCare Logo" 
               className="w-32 h-auto mb-2 rounded-lg shadow-sm"
             />
-            <h1 className="text-2xl font-bold mb-1">RoadCare</h1>
+            <h1 className="text-2xl font-bold mb-1 text-[#3498DB]">RoadCare</h1>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#333333]/80">
             {userType === "citizen" 
               ? "Login as a citizen to report and track road issues" 
               : "Login as administrative staff to manage road issues"}
@@ -31,17 +31,17 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
         
         <div className="mb-4 w-full">
           <Tabs defaultValue="email" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-4 bg-gray-100 rounded-md">
+            <TabsList className="grid w-full grid-cols-2 mb-4 bg-[#F4F4F4] rounded-md">
               <TabsTrigger 
                 value="email" 
-                className="flex items-center gap-2 data-[state=active]:bg-[#0EA5E9] data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-[#3498DB] data-[state=active]:text-white"
               >
                 <Mail className="h-4 w-4" />
                 Email
               </TabsTrigger>
               <TabsTrigger 
                 value="phone" 
-                className="flex items-center gap-2 data-[state=active]:bg-[#0EA5E9] data-[state=active]:text-white"
+                className="flex items-center gap-2 data-[state=active]:bg-[#3498DB] data-[state=active]:text-white"
               >
                 <Phone className="h-4 w-4" />
                 Phone
@@ -60,16 +60,16 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
 
         <div className="relative w-full my-4">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200"></div>
+            <div className="w-full border-t border-[#3498DB]/20"></div>
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="px-2 bg-white text-gray-500">or continue with</span>
+            <span className="px-2 bg-white text-[#333333]/70">or continue with</span>
           </div>
         </div>
 
         <SocialLogin userType={userType} />
         
-        <p className="text-center text-xs text-gray-500 mt-4">
+        <p className="text-center text-xs text-[#333333]/70 mt-4">
           By continuing, you agree to RoadCare's Terms of Service and Privacy Policy.
         </p>
       </div>

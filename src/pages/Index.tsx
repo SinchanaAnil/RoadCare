@@ -23,8 +23,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#0EA5E9] to-[#0056b3] p-4">
-      <div className="text-center max-w-2xl">
+    <div className="min-h-screen flex items-center justify-center relative">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/lovable-uploads/699255ca-9aff-4587-8b6c-fc1b70acefc1.png" 
+          alt="RoadCare Background" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#3498DB]/80 to-[#0056b3]/80"></div>
+      </div>
+
+      <div className="text-center max-w-2xl z-10">
         <div className="flex flex-col items-center mb-6">
           <img 
             src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
@@ -37,7 +47,7 @@ const Index = () => {
         <Button 
           onClick={handleGetStarted}
           size="lg" 
-          className="bg-[#F97316] hover:bg-[#F97316]/90 text-white text-lg px-8 py-6 rounded-lg shadow-lg transition-all duration-200"
+          className="bg-[#3498DB] hover:bg-[#3498DB]/90 text-white text-lg px-8 py-6 rounded-lg shadow-lg transition-all duration-200"
         >
           Get Started
         </Button>

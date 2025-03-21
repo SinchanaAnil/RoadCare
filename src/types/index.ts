@@ -40,3 +40,64 @@ export interface Report {
   repairDate?: string;
   assignedEmployee?: string;
 }
+
+// User badge types for gamification
+export type BadgeType = 'bronze' | 'silver' | 'gold' | 'platinum';
+
+export interface UserBadge {
+  type: BadgeType;
+  name: string;
+  description: string;
+  imageUrl?: string;
+  unlockedAt: string;
+}
+
+export interface UserAchievement {
+  id: string;
+  name: string;
+  description: string;
+  date: string;
+  points: number;
+}
+
+export interface ForumPost {
+  id: string;
+  title: string;
+  content: string;
+  author: {
+    id: string;
+    name: string;
+    badge?: BadgeType;
+    avatar?: string;
+  };
+  date: string;
+  likes: number;
+  comments: ForumComment[];
+  images?: string[];
+  location?: string;
+  lat?: number;
+  lng?: number;
+}
+
+export interface ForumComment {
+  id: string;
+  author: {
+    id: string;
+    name: string;
+    badge?: BadgeType;
+    avatar?: string;
+  };
+  content: string;
+  date: string;
+  likes: number;
+}
+
+export interface LeaderboardEntry {
+  userId: string;
+  name: string;
+  avatar?: string;
+  badge: BadgeType;
+  reportsCount: number;
+  points: number;
+  area?: string;
+}

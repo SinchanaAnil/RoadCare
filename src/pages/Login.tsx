@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -65,51 +66,63 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#0EA5E9] to-[#0056b3] p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex flex-col items-center justify-center relative">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/lovable-uploads/699255ca-9aff-4587-8b6c-fc1b70acefc1.png" 
+          alt="RoadCare Background" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/80 to-[#0056b3]/80"></div>
+      </div>
+      
+      <div className="w-full max-w-md z-10">
         <div className="text-center mb-6">
           <img 
             src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
             alt="RoadCare Logo" 
             className="w-48 h-auto mx-auto mb-4 rounded-lg shadow-md"
           />
+          <h2 className="text-2xl font-bold text-white drop-shadow-md">RoadCare</h2>
+          <p className="text-white/90 text-sm">Report road issues and track repairs efficiently</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-blue-200 transition-all duration-300 hover:shadow-2xl">
+        <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-[#3498DB]/20 transition-all duration-300 hover:shadow-2xl backdrop-blur-sm bg-white/95">
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-center text-[#0EA5E9] mb-4">Choose Account Type</h2>
+            <h2 className="text-xl font-bold text-center text-[#3498DB] mb-4">Choose Account Type</h2>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <Button 
                 variant="outline" 
-                className={`flex flex-col items-center p-4 h-auto gap-2 transition-all duration-200 ${userType === "citizen" ? "bg-blue-100 border-[#0EA5E9]" : "border-blue-200 hover:bg-blue-50"}`}
+                className={`flex flex-col items-center p-4 h-auto gap-2 transition-all duration-200 ${userType === "citizen" ? "bg-[#3498DB]/10 border-[#3498DB] text-[#3498DB]" : "border-[#3498DB]/20 hover:bg-[#3498DB]/5"}`}
                 onClick={() => setUserType("citizen")}
               >
-                <User className="h-6 w-6 text-[#0EA5E9]" />
+                <User className="h-6 w-6 text-[#3498DB]" />
                 <span className="text-sm font-medium">Citizen</span>
               </Button>
               <Button 
                 variant="outline" 
-                className={`flex flex-col items-center p-4 h-auto gap-2 transition-all duration-200 ${userType === "municipal" ? "bg-blue-100 border-[#0EA5E9]" : "border-blue-200 hover:bg-blue-50"}`}
+                className={`flex flex-col items-center p-4 h-auto gap-2 transition-all duration-200 ${userType === "municipal" ? "bg-[#3498DB]/10 border-[#3498DB] text-[#3498DB]" : "border-[#3498DB]/20 hover:bg-[#3498DB]/5"}`}
                 onClick={() => setUserType("municipal")}
               >
-                <Building2 className="h-6 w-6 text-[#0EA5E9]" />
+                <Building2 className="h-6 w-6 text-[#3498DB]" />
                 <span className="text-sm font-medium">Administrative</span>
               </Button>
             </div>
           </div>
 
           <Tabs defaultValue="email" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6 bg-blue-50 rounded-lg">
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-[#F4F4F4] rounded-lg">
               <TabsTrigger 
                 value="email" 
-                className="flex items-center gap-2 data-[state=active]:bg-[#0EA5E9] data-[state=active]:text-white rounded-md transition-all duration-200"
+                className="flex items-center gap-2 data-[state=active]:bg-[#3498DB] data-[state=active]:text-white rounded-md transition-all duration-200"
               >
                 <Mail className="h-4 w-4" />
                 Email
               </TabsTrigger>
               <TabsTrigger 
                 value="phone" 
-                className="flex items-center gap-2 data-[state=active]:bg-[#0EA5E9] data-[state=active]:text-white rounded-md transition-all duration-200"
+                className="flex items-center gap-2 data-[state=active]:bg-[#3498DB] data-[state=active]:text-white rounded-md transition-all duration-200"
               >
                 <Phone className="h-4 w-4" />
                 Phone
@@ -119,7 +132,7 @@ const Login = () => {
             <TabsContent value="email" className="animate-in fade-in-50 duration-200">
               <form onSubmit={handleEmailLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="email" className="text-sm font-medium text-[#333333]">
                     Email Address
                   </label>
                   <Input
@@ -128,12 +141,12 @@ const Login = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="border-blue-200 focus:border-[#0EA5E9] focus:ring-[#0EA5E9] transition-all duration-200"
+                    className="border-[#3498DB]/20 focus:border-[#3498DB] focus:ring-[#3498DB] transition-all duration-200"
                   />
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full bg-[#F97316] hover:bg-[#F97316]/90 text-white transition-all duration-200 flex items-center justify-center"
+                  className="w-full bg-[#3498DB] hover:bg-[#3498DB]/90 text-white transition-all duration-200 flex items-center justify-center"
                 >
                   Continue with Email
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -144,7 +157,7 @@ const Login = () => {
             <TabsContent value="phone" className="animate-in fade-in-50 duration-200">
               <form onSubmit={handlePhoneLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="phone" className="text-sm font-medium text-[#333333]">
                     Phone Number
                   </label>
                   <Input
@@ -153,12 +166,12 @@ const Login = () => {
                     placeholder="Enter your phone number"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="border-blue-200 focus:border-[#0EA5E9] focus:ring-[#0EA5E9] transition-all duration-200"
+                    className="border-[#3498DB]/20 focus:border-[#3498DB] focus:ring-[#3498DB] transition-all duration-200"
                   />
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full bg-[#F97316] hover:bg-[#F97316]/90 text-white transition-all duration-200 flex items-center justify-center"
+                  className="w-full bg-[#3498DB] hover:bg-[#3498DB]/90 text-white transition-all duration-200 flex items-center justify-center"
                 >
                   Continue with Phone
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -169,10 +182,10 @@ const Login = () => {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-[#3498DB]/10"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              <span className="px-2 bg-white text-[#333333]/70">Or continue with</span>
             </div>
           </div>
 
@@ -180,7 +193,7 @@ const Login = () => {
             <Button
               variant="outline"
               onClick={() => handleSocialLogin("Google")}
-              className="flex items-center justify-center gap-2 border-blue-200 hover:bg-blue-50 text-gray-700 transition-all duration-200"
+              className="flex items-center justify-center gap-2 border-[#3498DB]/20 hover:bg-[#3498DB]/5 text-[#333333] transition-all duration-200"
             >
               <svg
                 width="18"
@@ -198,14 +211,14 @@ const Login = () => {
             <Button
               variant="outline"
               onClick={() => handleSocialLogin("Apple")}
-              className="flex items-center justify-center gap-2 border-blue-200 hover:bg-blue-50 text-gray-700 transition-all duration-200"
+              className="flex items-center justify-center gap-2 border-[#3498DB]/20 hover:bg-[#3498DB]/5 text-[#333333] transition-all duration-200"
             >
               <Apple className="h-4 w-4" />
               Apple
             </Button>
           </div>
 
-          <p className="text-center text-xs text-gray-500 mt-6">
+          <p className="text-center text-xs text-[#333333]/70 mt-6">
             By continuing, you agree to RoadCare's Terms of Service and Privacy Policy.
           </p>
         </div>
