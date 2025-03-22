@@ -1,32 +1,12 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-
-type UserType = "citizen" | "municipal";
-
-export type ProfileType = {
-  id: string;
-  name: string;
-  email?: string;
-  phone?: string;
-  avatar?: string;
-  user_type: UserType;
-};
-
-type AuthContextType = {
-  isAuthenticated: boolean;
-  user: ProfileType | null;
-  session: Session | null;
-  loading: boolean;
-  login: (email: string, password: string, userType?: UserType) => Promise<void>;
-  signUp: (email: string, password: string, userType?: UserType) => Promise<void>;
-  socialLogin: (provider: 'google' | 'apple') => Promise<void>;
-  logout: () => Promise<void>;
-  updateProfile: (profile: Partial<ProfileType>) => Promise<void>;
-};
+import { useProfile } from '@/hooks/useProfile';
+import { useAuthService } from '@/hooks/useAuthService';
+import { AuthContextType, ProfileType, UserType } from '@/types/auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -36,33 +16,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  // Function to fetch profile data from the profiles table
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        throw error;
-      }
-
-      if (data) {
-        // Ensure we cast user_type to the correct type
-        return {
-          ...data,
-          user_type: data.user_type as UserType
-        } as ProfileType;
-      }
-      return null;
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-      return null;
-    }
-  };
+  const { fetchProfile, updateProfile: updateUserProfile } = useProfile();
+  const { login: authLogin, signUp: authSignUp, socialLogin: authSocialLogin, logout: authLogout } = useAuthService();
 
   // Set up auth state listener
   useEffect(() => {
@@ -112,23 +67,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string, userType: UserType = "citizen") => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        throw error;
-      }
+      await authLogin(email, password, userType);
 
       // Show welcome message based on user type
       toast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
       
       // Redirect based on user type
       navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to sign in");
-      console.error('Error signing in:', error);
+    } catch (error) {
+      // Error is already handled in authLogin
     } finally {
       setLoading(false);
     }
@@ -137,24 +84,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (email: string, password: string, userType: UserType = "citizen") => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            user_type: userType
-          }
-        }
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      toast.success("Successfully signed up! Please check your email for verification.");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to sign up");
-      console.error('Error signing up:', error);
+      await authSignUp(email, password, userType);
+    } catch (error) {
+      // Error is already handled in authSignUp
     } finally {
       setLoading(false);
     }
@@ -162,35 +94,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const socialLogin = async (provider: 'google' | 'apple') => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: window.location.origin,
-        }
-      });
-
-      if (error) {
-        throw error;
-      }
-    } catch (error: any) {
-      toast.error(error.message || `Failed to sign in with ${provider}`);
-      console.error(`Error signing in with ${provider}:`, error);
+      await authSocialLogin(provider);
+    } catch (error) {
+      // Error is already handled in authSocialLogin
     }
   };
 
   const logout = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        throw error;
-      }
-      
+      await authLogout();
       navigate('/');
-    } catch (error: any) {
-      toast.error(error.message || "Failed to sign out");
-      console.error('Error signing out:', error);
+    } catch (error) {
+      // Error is already handled in authLogout
     } finally {
       setLoading(false);
     }
@@ -204,24 +120,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('profiles')
-        .update(profileData)
-        .eq('id', user.id)
-        .select()
-        .single();
+      const updatedProfile = await updateUserProfile(user.id, profileData);
 
-      if (error) {
-        throw error;
-      }
-
-      if (data) {
-        // Cast the user_type to UserType to ensure type safety
-        setUser({
-          ...user,
-          ...data,
-          user_type: data.user_type as UserType
-        });
+      if (updatedProfile) {
+        setUser(updatedProfile);
         toast.success("Profile updated successfully");
       }
     } catch (error: any) {
