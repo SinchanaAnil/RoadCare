@@ -51,7 +51,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (data) {
-        return data as ProfileType;
+        // Ensure we cast user_type to the correct type
+        return {
+          ...data,
+          user_type: data.user_type as UserType
+        } as ProfileType;
       }
       return null;
     } catch (error) {
@@ -212,7 +216,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (data) {
-        setUser({ ...user, ...data });
+        // Cast the user_type to UserType to ensure type safety
+        setUser({
+          ...user,
+          ...data,
+          user_type: data.user_type as UserType
+        });
         toast.success("Profile updated successfully");
       }
     } catch (error: any) {

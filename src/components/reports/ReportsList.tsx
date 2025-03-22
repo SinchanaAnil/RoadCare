@@ -27,7 +27,7 @@ type ReportsListProps = {
 
 const ReportsList = ({ reports }: ReportsListProps) => {
   const { user } = useAuth();
-  const isMunicipal = user?.userType === "municipal";
+  const isMunicipal = user?.user_type === "municipal";
 
   const getStatusBadge = (status: string) => {
     switch (status) {
