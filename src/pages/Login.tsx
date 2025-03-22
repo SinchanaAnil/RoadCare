@@ -12,14 +12,30 @@ import SocialLoginOptions from "@/components/login/SocialLoginOptions";
 
 const Login = () => {
   const [userType, setUserType] = useState<"citizen" | "municipal">("citizen");
-  const { login } = useAuth();
+  const [isSignUp, setIsSignUp] = useState(false);
+  const { login, signUp, socialLogin, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSocialLogin = (provider: string) => {
-    // Mock login for demo purposes
-    login("demo@roadcare.com", undefined, userType);
-    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
+  const handleSocialLogin = (provider: 'google' | 'apple') => {
+    socialLogin(provider);
+  };
+
+  const handleEmailSubmit = async (email: string, password: string) => {
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please enter your email and password",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (isSignUp) {
+      await signUp(email, password, userType);
+    } else {
+      await login(email, password, userType);
+    }
   };
 
   return (
@@ -31,7 +47,25 @@ const Login = () => {
 
         <div className="bg-white rounded-xl shadow-xl p-6 md:p-8 border border-[#3498DB]/20 transition-all duration-300 hover:shadow-2xl backdrop-blur-sm bg-white/95">
           <AccountTypeSelector userType={userType} setUserType={setUserType} />
-          <LoginTabs userType={userType} />
+          
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-[#3498DB]">
+              {isSignUp ? "Create Account" : "Welcome Back"}
+            </h2>
+            <button 
+              onClick={() => setIsSignUp(!isSignUp)} 
+              className="text-sm text-[#3498DB] hover:underline"
+            >
+              {isSignUp ? "Already have an account?" : "Need an account?"}
+            </button>
+          </div>
+          
+          <LoginTabs 
+            userType={userType} 
+            isSignUp={isSignUp}
+            onEmailSubmit={handleEmailSubmit}
+            loading={loading}
+          />
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Apple } from "lucide-react";
 
 interface SocialLoginOptionsProps {
-  onSocialLogin: (provider: string) => void;
+  onSocialLogin: (provider: 'google' | 'apple') => void;
 }
 
 const SocialLoginOptions = ({ onSocialLogin }: SocialLoginOptionsProps) => {
@@ -12,7 +12,7 @@ const SocialLoginOptions = ({ onSocialLogin }: SocialLoginOptionsProps) => {
     <div className="grid grid-cols-2 gap-4">
       <Button
         variant="outline"
-        onClick={() => onSocialLogin("Google")}
+        onClick={() => onSocialLogin("google")}
         className="flex items-center justify-center gap-2 border-[#3498DB]/20 hover:bg-[#3498DB]/5 text-[#333333] transition-all duration-200"
       >
         <svg
@@ -30,7 +30,7 @@ const SocialLoginOptions = ({ onSocialLogin }: SocialLoginOptionsProps) => {
       </Button>
       <Button
         variant="outline"
-        onClick={() => onSocialLogin("Apple")}
+        onClick={() => onSocialLogin("apple")}
         className="flex items-center justify-center gap-2 border-[#3498DB]/20 hover:bg-[#3498DB]/5 text-[#333333] transition-all duration-200"
       >
         <Apple className="h-4 w-4" />

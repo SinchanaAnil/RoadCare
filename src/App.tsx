@@ -21,26 +21,43 @@ const queryClient = new QueryClient();
 
 // Protected route wrapper that also checks user type
 const ProtectedRoute = ({ children, requiredUserType }: { children: React.ReactNode, requiredUserType?: "citizen" | "municipal" }) => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
+  
+  // Show loading state while checking authentication
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#3498DB]"></div>
+    </div>;
+  }
   
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
   
   // If a specific user type is required and user doesn't match, redirect to appropriate dashboard
-  if (requiredUserType && user?.userType !== requiredUserType) {
-    return <Navigate to={user?.userType === "citizen" ? "/dashboard" : "/municipal-dashboard"} replace />;
+  if (requiredUserType && user?.user_type !== requiredUserType) {
+    return <Navigate to={user?.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard"} replace />;
   }
   
   return <>{children}</>;
 };
 
 const AppRoutes = () => {
-  const { user } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
+  
+  // Show loading state while checking authentication
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#3498DB]"></div>
+    </div>;
+  }
   
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={isAuthenticated ? 
+        <Navigate to={user?.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard"} /> : 
+        <Login />} 
+      />
       <Route element={
         <ProtectedRoute>
           <Layout />
@@ -95,11 +112,11 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <AuthProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
           <AppRoutes />
-        </BrowserRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
