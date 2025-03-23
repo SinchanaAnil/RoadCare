@@ -12,7 +12,9 @@ const Community = () => {
 
   return (
     <div className="container py-8 max-w-7xl">
-      <h1 className="text-2xl font-bold mb-6 text-[#3498DB]">Community Forum</h1>
+      <h1 className="text-2xl font-bold mb-6 text-[#3498DB]">
+        <span className="font-michroma">RoadCare</span> Community Forum
+      </h1>
 
       <Tabs defaultValue="discussions" className="w-full">
         <TabsList className="w-full flex mb-6 bg-[#F4F4F4] p-1 rounded-lg">

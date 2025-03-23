@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -136,4 +137,9 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--secondary));
+}
+
+/* Michroma font class */
+.font-michroma {
+  font-family: 'Michroma', sans-serif;
 }

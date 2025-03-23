@@ -211,17 +211,6 @@ const Home = () => {
                 View all activities
               </Button>
             </Card>
-            
-            <Card className="p-4">
-              <h3 className="text-lg font-semibold mb-4">Quick Report</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Noticed a road issue? Report it quickly to get it fixed!
-              </p>
-              <Button className="w-full bg-fixit-accent hover:bg-fixit-accent/90">
-                <AlertCircle className="h-4 w-4 mr-2" />
-                Report New Issue
-              </Button>
-            </Card>
           </div>
         </div>
       </div>

@@ -34,7 +34,9 @@ const Index = () => {
             alt="RoadCare Logo" 
             className="w-64 h-auto mb-4 rounded-lg shadow-md"
           />
-          <h1 className="text-4xl font-bold text-[#333333] drop-shadow-md">Welcome to RoadCare</h1>
+          <h1 className="text-4xl font-bold text-[#333333] drop-shadow-md">
+            Welcome to <span className="font-michroma text-fixit-primary">Road</span><span className="font-michroma text-fixit-accent">Care</span>
+          </h1>
         </div>
         <p className="text-xl text-[#333333]/90 mb-8">Report road issues and track repairs efficiently</p>
         <Button 

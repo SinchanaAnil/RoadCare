@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { ForumPost } from '@/types';
 import ForumPostComponent from './ForumPost';
+import NewPostForm from './NewPostForm';
 
 interface DiscussionsTabProps {
   initialPosts: ForumPost[];
@@ -68,6 +69,10 @@ const DiscussionsTab = ({ initialPosts }: DiscussionsTabProps) => {
     }));
   };
 
+  const handleAddPost = (newPost: ForumPost) => {
+    setPosts([newPost, ...posts]);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -80,9 +85,7 @@ const DiscussionsTab = ({ initialPosts }: DiscussionsTabProps) => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button className="bg-[#3498DB] hover:bg-[#3498DB]/90">
-          New Post
-        </Button>
+        <NewPostForm onAddPost={handleAddPost} />
       </div>
 
       <div className="space-y-6">

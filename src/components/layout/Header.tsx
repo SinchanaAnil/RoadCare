@@ -27,8 +27,8 @@ const Header = () => {
                   className="flex items-center gap-2 text-lg font-bold"
                   onClick={closeSheet}
                 >
-                  <span className="text-fixit-primary">Road</span>
-                  <span className="text-fixit-accent">Care</span>
+                  <span className="text-fixit-primary font-michroma">Road</span>
+                  <span className="text-fixit-accent font-michroma">Care</span>
                 </Link>
                 <nav className="flex flex-col gap-4">
                   <Link
@@ -84,8 +84,8 @@ const Header = () => {
             </SheetContent>
           </Sheet>
           <Link to="/dashboard" className="flex items-center gap-1 text-lg font-bold">
-            <span className="text-fixit-primary">Road</span>
-            <span className="text-fixit-accent">Care</span>
+            <span className="text-fixit-primary font-michroma">Road</span>
+            <span className="text-fixit-accent font-michroma">Care</span>
           </Link>
         </div>
         <nav className="hidden lg:flex items-center gap-6">
