@@ -10,10 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Camera, Upload, MapPin, Check, Search } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { generateTicketNumber } from '@/utils/ticketGenerator';
 
 // Fix Leaflet icon issue
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -154,7 +155,6 @@ const LocationPicker = ({ onLocationSelect, initialLocation }: { onLocationSelec
 
 const ReportIssue = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [location, setLocation] = useState('');
   const [currentCoords, setCurrentCoords] = useState<[number, number] | null>(null);
@@ -162,6 +162,7 @@ const ReportIssue = () => {
   const [severity, setSeverity] = useState([5]);
   const [images, setImages] = useState<string[]>([]);
   const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
+  const [ticketNumber, setTicketNumber] = useState('');
 
   const handleFetchLocation = () => {
     setFetchingLocation(true);
@@ -252,15 +253,27 @@ const ReportIssue = () => {
     event.preventDefault();
     setIsSubmitting(true);
 
+    // Generate a ticket number
+    const newTicketNumber = generateTicketNumber();
+    setTicketNumber(newTicketNumber);
+
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
+      
+      // Show success toast with ticket number
       toast({
         title: "Report submitted",
-        description: "Your report has been submitted successfully. You will receive updates as it progresses.",
-        duration: 5000,
+        description: `Your report has been submitted successfully. Your ticket number is ${newTicketNumber}. Please save this for future reference.`,
+        duration: 10000,
       });
-      navigate('/report-success');
+      
+      // Pass ticket number to success page via state
+      navigate('/report-success', { 
+        state: { 
+          ticketNumber: newTicketNumber 
+        } 
+      });
     }, 2000);
   };
 

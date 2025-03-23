@@ -1,10 +1,24 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Check, ArrowLeft, MapPin, Clock } from 'lucide-react';
+import { Check, ArrowLeft, MapPin, Clock, Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const ReportSuccess = () => {
+  const location = useLocation();
+  const { toast } = useToast();
+  const ticketNumber = location.state?.ticketNumber || "RC-00000000-0000";
+
+  const copyTicketNumber = () => {
+    navigator.clipboard.writeText(ticketNumber);
+    toast({
+      title: "Copied to clipboard",
+      description: "The ticket number has been copied to your clipboard.",
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="container py-12 max-w-md">
       <Card className="p-8 text-center">
@@ -13,9 +27,28 @@ const ReportSuccess = () => {
         </div>
         
         <h1 className="text-2xl font-bold mb-2">Report Submitted!</h1>
-        <p className="text-muted-foreground mb-6">
+        <p className="text-muted-foreground mb-4">
           Thank you for your report. Your contribution helps make our roads safer for everyone.
         </p>
+        
+        <div className="bg-muted/20 rounded-lg p-4 mb-4 flex flex-col items-center">
+          <p className="text-sm text-muted-foreground mb-1">Your Ticket Number</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-mono font-bold">{ticketNumber}</span>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-6 w-6" 
+              onClick={copyTicketNumber}
+            >
+              <Copy className="h-4 w-4" />
+              <span className="sr-only">Copy ticket number</span>
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Save this number for tracking your report status
+          </p>
+        </div>
         
         <div className="bg-muted/20 rounded-lg p-4 mb-6 text-left">
           <h3 className="font-medium mb-2">What happens next?</h3>
