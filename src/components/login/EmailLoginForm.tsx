@@ -26,7 +26,7 @@ const EmailLoginForm = ({ userType }: EmailLoginFormProps) => {
       return;
     }
     
-    login(email, undefined, userType);
+    login(email, userType);
     
     // Show specific welcome message based on user type
     sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");

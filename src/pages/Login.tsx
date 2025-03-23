@@ -13,7 +13,7 @@ import SocialLoginOptions from "@/components/login/SocialLoginOptions";
 const Login = () => {
   const [userType, setUserType] = useState<"citizen" | "municipal">("citizen");
   const [isSignUp, setIsSignUp] = useState(false);
-  const { login, signUp, socialLogin, loading } = useAuth();
+  const { login, socialLogin, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -21,21 +21,18 @@ const Login = () => {
     socialLogin(provider);
   };
 
-  const handleEmailSubmit = async (email: string, password: string) => {
-    if (!email || !password) {
+  const handleEmailSubmit = async (email: string) => {
+    if (!email) {
       toast({
         title: "Error",
-        description: "Please enter your email and password",
+        description: "Please enter your email",
         variant: "destructive",
       });
       return;
     }
     
-    if (isSignUp) {
-      await signUp(email, password, userType);
-    } else {
-      await login(email, password, userType);
-    }
+    // Use the same login function for both sign in and sign up
+    await login(email, userType);
   };
 
   return (
@@ -56,7 +53,7 @@ const Login = () => {
               onClick={() => setIsSignUp(!isSignUp)} 
               className="text-sm text-[#3498DB] hover:underline"
             >
-              {isSignUp ? "Already have an account?" : "Need an account?"}
+              {isSignUp ? "Already have an account?" : "New to RoadCare?"}
             </button>
           </div>
           

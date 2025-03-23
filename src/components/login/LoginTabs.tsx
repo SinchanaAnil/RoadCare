@@ -8,18 +8,17 @@ import { Button } from "@/components/ui/button";
 interface LoginTabsProps {
   userType: "citizen" | "municipal";
   isSignUp: boolean;
-  onEmailSubmit: (email: string, password: string) => Promise<void>;
+  onEmailSubmit: (email: string) => Promise<void>;
   loading: boolean;
 }
 
 const LoginTabs = ({ userType, isSignUp, onEmailSubmit, loading }: LoginTabsProps) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onEmailSubmit(email, password);
+    await onEmailSubmit(email);
   };
 
   return (
@@ -59,21 +58,6 @@ const LoginTabs = ({ userType, isSignUp, onEmailSubmit, loading }: LoginTabsProp
             />
           </div>
           
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-[#333333]">
-              Password
-            </label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border-[#3498DB]/20 focus:border-[#3498DB] focus:ring-[#3498DB] transition-all duration-200"
-              required
-            />
-          </div>
-          
           <Button 
             type="submit" 
             className="w-full bg-[#3498DB] hover:bg-[#3498DB]/90 text-white transition-all duration-200 flex items-center justify-center"
@@ -86,7 +70,7 @@ const LoginTabs = ({ userType, isSignUp, onEmailSubmit, loading }: LoginTabsProp
               </>
             ) : (
               <>
-                {isSignUp ? "Create Account" : "Sign In"}
+                {isSignUp ? "Continue" : "Sign In"}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </>
             )}

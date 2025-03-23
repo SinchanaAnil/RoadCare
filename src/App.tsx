@@ -19,7 +19,7 @@ import Community from "./pages/Community";
 
 const queryClient = new QueryClient();
 
-// Protected route wrapper that also checks user type
+// Simplified protected route wrapper
 const ProtectedRoute = ({ children, requiredUserType }: { children: React.ReactNode, requiredUserType?: "citizen" | "municipal" }) => {
   const { isAuthenticated, user, loading } = useAuth();
   
