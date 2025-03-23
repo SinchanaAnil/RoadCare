@@ -30,7 +30,7 @@ const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
     login(phone, userType);
     
     // Show specific welcome message based on user type
-    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
     
     // Route to correct dashboard based on user type
     navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");

@@ -24,7 +24,7 @@ const Footer = () => {
           </Link>
         </nav>
         <div className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} RoadCare. All rights reserved.
+          &copy; {new Date().getFullYear()} <span className="font-michroma">RoadCare</span>. All rights reserved.
         </div>
       </div>
     </footer>

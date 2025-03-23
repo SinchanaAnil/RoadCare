@@ -27,7 +27,7 @@ const AccountTypeSelector = ({ userType, setUserType }: AccountTypeSelectorProps
           onClick={() => setUserType("municipal")}
         >
           <Building2 className="h-6 w-6 text-[#3498DB]" />
-          <span className="text-sm font-medium">Administrative</span>
+          <span className="text-sm font-medium">Municipal Worker</span>
         </Button>
       </div>
     </div>

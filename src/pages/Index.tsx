@@ -14,7 +14,7 @@ const Index = () => {
     // Redirect authenticated users to appropriate dashboard
     if (isAuthenticated) {
       // Show welcome message based on user type when redirecting from index
-      sonnerToast.success(user?.user_type === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+      sonnerToast.success(user?.user_type === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
       navigate(user?.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard");
     }
   }, [isAuthenticated, user, navigate]);

@@ -20,12 +20,14 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
               alt="RoadCare Logo" 
               className="w-32 h-auto mb-2 rounded-lg shadow-sm"
             />
-            <h1 className="text-2xl font-bold mb-1 text-[#3498DB]">RoadCare</h1>
+            <h1 className="text-2xl font-bold mb-1 text-[#3498DB]">
+              <span className="font-michroma">RoadCare</span>
+            </h1>
           </div>
           <p className="text-sm text-[#333333]/80">
             {userType === "citizen" 
               ? "Login as a citizen to report and track road issues" 
-              : "Login as administrative staff to manage road issues"}
+              : "Login as municipal staff to manage road issues"}
           </p>
         </div>
         

@@ -16,6 +16,11 @@ import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
 import VerifyRepairPage from "./pages/VerifyRepairPage";
 import Community from "./pages/Community";
+import About from "./pages/About";
+import Terms from "./pages/Terms";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -56,8 +61,19 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={isAuthenticated ? 
         <Navigate to={user?.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard"} /> : 
+        <Index />} 
+      />
+      <Route path="/login" element={isAuthenticated ? 
+        <Navigate to={user?.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard"} /> : 
         <Login />} 
       />
+      
+      {/* Public routes */}
+      <Route path="/about" element={<About />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/privacy" element={<Privacy />} />
+      
       <Route element={
         <ProtectedRoute>
           <Layout />
