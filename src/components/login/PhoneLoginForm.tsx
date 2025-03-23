@@ -26,7 +26,8 @@ const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
       return;
     }
     
-    login(undefined, phone, userType);
+    // Modified to use just phone as email and pass userType as second arg
+    login(phone, userType);
     
     // Show specific welcome message based on user type
     sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");

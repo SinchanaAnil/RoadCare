@@ -19,8 +19,8 @@ const SocialLogin = ({ userType }: SocialLoginProps) => {
       description: `${provider} login integration will be implemented soon`,
     });
     
-    // Mock login for demo
-    login("demo@roadcare.com", undefined, userType);
+    // Modified to use provider as email and userType as second arg
+    login(`${provider}@roadcare.com`, userType);
     
     // Show specific welcome message based on user type
     sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
