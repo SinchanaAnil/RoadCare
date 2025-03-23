@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { fetchProfile, updateProfile: updateUserProfile } = useProfile();
+  const { fetchProfile, createProfile, updateProfile: updateUserProfile } = useProfile();
   const { login: authLogin, signUp: authSignUp, socialLogin: authSocialLogin, logout: authLogout } = useAuthService();
 
   // Set up auth state listener
@@ -30,12 +30,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(newSession);
         
         if (newSession?.user) {
-          const profile = await fetchProfile(newSession.user.id);
+          let profile = await fetchProfile(newSession.user.id);
+          
+          // If profile doesn't exist, create one
+          if (!profile) {
+            console.log('Profile not found, creating new profile');
+            const userType = newSession.user.user_metadata.user_type as UserType || "citizen";
+            profile = await createProfile(
+              newSession.user.id, 
+              newSession.user.email,
+              userType
+            );
+          }
+          
           if (profile) {
+            console.log('Setting user profile and authenticated state:', profile);
             setUser(profile);
             setIsAuthenticated(true);
+          } else {
+            console.error('Failed to get or create profile');
+            setUser(null);
+            setIsAuthenticated(false);
           }
         } else {
+          console.log('No user in session, clearing auth state');
           setUser(null);
           setIsAuthenticated(false);
         }
@@ -46,13 +64,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Then check for existing session
     supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
+      console.log('Initial session check:', currentSession);
       setSession(currentSession);
       
       if (currentSession?.user) {
-        const profile = await fetchProfile(currentSession.user.id);
+        let profile = await fetchProfile(currentSession.user.id);
+        
+        // If profile doesn't exist, create one
+        if (!profile) {
+          console.log('Profile not found on initial load, creating new profile');
+          const userType = currentSession.user.user_metadata.user_type as UserType || "citizen";
+          profile = await createProfile(
+            currentSession.user.id, 
+            currentSession.user.email,
+            userType
+          );
+        }
+        
         if (profile) {
+          console.log('Setting initial user profile and authenticated state:', profile);
           setUser(profile);
           setIsAuthenticated(true);
+        } else {
+          console.error('Failed to get or create initial profile');
+          setUser(null);
+          setIsAuthenticated(false);
         }
       }
       
@@ -67,15 +103,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string, userType: UserType = "citizen") => {
     try {
       setLoading(true);
-      await authLogin(email, password, userType);
-
-      // Show welcome message based on user type
-      toast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+      const response = await authLogin(email, password, userType);
       
-      // Redirect based on user type
-      navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
+      if (response?.user) {
+        // Check if profile exists, if not create one
+        let profile = await fetchProfile(response.user.id);
+        
+        if (!profile) {
+          profile = await createProfile(response.user.id, email, userType);
+        }
+        
+        if (profile) {
+          setUser(profile);
+          setIsAuthenticated(true);
+          
+          // Show welcome message based on user type
+          toast.success(profile.user_type === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+          
+          // Force navigate based on user type
+          console.log('Redirecting after login to:', profile.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard");
+          navigate(profile.user_type === "citizen" ? "/dashboard" : "/municipal-dashboard", { replace: true });
+        }
+      }
     } catch (error) {
       // Error is already handled in authLogin
+      console.error('Login failed in context:', error);
     } finally {
       setLoading(false);
     }
@@ -84,9 +136,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (email: string, password: string, userType: UserType = "citizen") => {
     try {
       setLoading(true);
-      await authSignUp(email, password, userType);
+      const response = await authSignUp(email, password, userType);
+      
+      if (response?.user) {
+        // Create a profile for the new user
+        await createProfile(response.user.id, email, userType);
+      }
     } catch (error) {
       // Error is already handled in authSignUp
+      console.error('Signup failed in context:', error);
     } finally {
       setLoading(false);
     }
@@ -95,8 +153,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const socialLogin = async (provider: 'google' | 'apple') => {
     try {
       await authSocialLogin(provider);
+      // The redirect happens in the provider, so we don't need to do anything else here
     } catch (error) {
       // Error is already handled in authSocialLogin
+      console.error('Social login failed in context:', error);
     }
   };
 
@@ -104,9 +164,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       setLoading(true);
       await authLogout();
-      navigate('/');
+      setUser(null);
+      setIsAuthenticated(false);
+      console.log('Navigating to / after logout');
+      navigate('/', { replace: true });
     } catch (error) {
       // Error is already handled in authLogout
+      console.error('Logout failed in context:', error);
     } finally {
       setLoading(false);
     }
@@ -133,6 +197,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
+
+  // For debugging purposes
+  useEffect(() => {
+    console.log('Auth context state:', { isAuthenticated, user, session, loading });
+  }, [isAuthenticated, user, session, loading]);
 
   return (
     <AuthContext.Provider value={{ 
