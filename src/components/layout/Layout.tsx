@@ -7,17 +7,14 @@ import Footer from './Footer';
 const Layout = () => {
   const { isAuthenticated } = useAuth();
   
-  if (!isAuthenticated) {
-    return null;
-  }
-  
+  // Instead of returning null, let's just render the content without Header/Footer for non-authenticated users
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      {isAuthenticated && <Header />}
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+      {isAuthenticated && <Footer />}
     </div>
   );
 };
