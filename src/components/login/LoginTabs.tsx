@@ -53,7 +53,7 @@ const LoginTabs = ({ userType, isSignUp, onEmailSubmit, loading }: LoginTabsProp
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border-[#3498DB]/20 focus:border-[#3498DB] focus:ring-[#3498DB] transition-all duration-200"
+              className="border-[#3498DB]/20 focus:border-[#3498DB] focus:ring-[#3498DB] transition-all duration-200 bg-white text-[#333333]"
               required
             />
           </div>

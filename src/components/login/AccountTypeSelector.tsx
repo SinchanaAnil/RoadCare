@@ -23,7 +23,7 @@ const AccountTypeSelector = ({ userType, setUserType }: AccountTypeSelectorProps
         </Button>
         <Button 
           variant="outline" 
-          className={`flex flex-col items-center p-4 h-auto gap-2 transition-all duration-200 ${userType === "municipal" ? "bg-[#3498DB]/10 border-[#3498DB] text-[#3498DB]" : "border-[#3498DB]/20 hover:bg-[#3498DB]/5"}`}
+          className={`flex flex-col items-center p-4 h-auto gap-2 transition-all duration-200 bg-white ${userType === "municipal" ? "bg-[#3498DB]/10 border-[#3498DB] text-[#3498DB]" : "border-[#3498DB]/20 hover:bg-[#3498DB]/5"}`}
           onClick={() => setUserType("municipal")}
         >
           <Building2 className="h-6 w-6 text-[#3498DB]" />
