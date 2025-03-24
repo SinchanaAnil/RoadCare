@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
       
       // Show welcome message based on user type
-      toast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Administrator!!");
+      toast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
       
       // Navigate to appropriate dashboard
       console.log('Redirecting after login to:', userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
@@ -91,11 +91,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider value={{ 
       isAuthenticated, 
       user, 
-      session: null, // Removed session
+      session: null,
       loading,
       login, 
-      signUp: login, // Redirect signUp to login
-      socialLogin: (provider) => login(`${provider}@example.com`), // Simple mock for social login
+      signUp: login,
+      socialLogin: (provider) => login(`${provider}@example.com`),
       logout,
       updateProfile
     }}>
