@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -6,6 +7,7 @@ import { AlertCircle, Check, Clock, FileSearch, Filter, MapPin, Search } from 'l
 import { Input } from '@/components/ui/input';
 import ReportsList from '@/components/reports/ReportsList';
 import MapView from '@/components/map/MapView';
+import HeatMap from '@/components/map/HeatMap';
 
 const mockReports = [
   {
@@ -18,8 +20,8 @@ const mockReports = [
     upvotes: 12,
     category: 'pothole',
     severity: 'high',
-    lat: 37.7749,
-    lng: -122.4194
+    lat: 12.9759, // Updated to Bangalore coordinates
+    lng: 77.5946
   },
   {
     id: '2',
@@ -31,8 +33,8 @@ const mockReports = [
     upvotes: 8,
     category: 'sidewalk',
     severity: 'medium',
-    lat: 37.7689,
-    lng: -122.4100
+    lat: 12.9815, // Updated to Bangalore coordinates
+    lng: 77.6089
   },
   {
     id: '3',
@@ -44,8 +46,8 @@ const mockReports = [
     upvotes: 5,
     category: 'sign',
     severity: 'medium',
-    lat: 37.7829,
-    lng: -122.4324
+    lat: 12.9651, // Updated to Bangalore coordinates
+    lng: 77.5636
   },
   {
     id: '4',
@@ -57,8 +59,8 @@ const mockReports = [
     upvotes: 15,
     category: 'drainage',
     severity: 'high',
-    lat: 37.7739,
-    lng: -122.4312
+    lat: 12.9352, // Updated to Bangalore coordinates
+    lng: 77.6245
   }
 ];
 
@@ -94,7 +96,7 @@ const Home = () => {
                   alt="RoadCare Logo" 
                   className="h-8 w-auto mr-3 rounded-md"
                 />
-                <h1 className="text-2xl font-bold">Road Issue Tracker</h1>
+                <h1 className="text-2xl font-bold">Bengaluru Road Issue Tracker</h1>
               </div>
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -138,6 +140,9 @@ const Home = () => {
                 </TabsContent>
               </Tabs>
             </Card>
+
+            {/* Heat Map Section */}
+            <HeatMap title="Bengaluru Road Issues Heat Map" />
           </div>
         </div>
         
