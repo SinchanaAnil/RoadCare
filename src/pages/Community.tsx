@@ -10,7 +10,7 @@ import { mockPosts, mockLeaderboard } from '@/components/community/mockData';
 
 const Community = () => {
   const { user } = useAuth();
-  const isMunicipalWorker = user?.type === "municipal";
+  const isMunicipalWorker = user?.user_type === "municipal";
 
   return (
     <div className="container py-8 max-w-7xl">

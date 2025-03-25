@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Filter, Search, User, Tool, Zap } from 'lucide-react';
+import { Filter, Search, User, Wrench, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { getBadgeColorClass } from './ForumPost';
 import BadgeCriteria from './BadgeCriteria';
@@ -133,7 +133,7 @@ const WorkerLeaderboardTab = ({ initialLeaderboard = mockWorkerLeaderboard }: Wo
               <span className="font-medium">{worker.name}</span>
             </div>
             <div className="col-span-2 text-center flex items-center justify-center gap-1.5">
-              <Tool className="h-3.5 w-3.5 text-secondary" />
+              <Wrench className="h-3.5 w-3.5 text-secondary" />
               <span className="text-xs">{worker.specialization}</span>
             </div>
             <div className="col-span-1 text-center">
