@@ -1,8 +1,7 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { Building2, User } from "lucide-react";
 import LoginBackground from "@/components/login/LoginBackground";
 import LoginHeader from "@/components/login/LoginHeader";
@@ -14,11 +13,10 @@ const Login = () => {
   const [userType, setUserType] = useState<"citizen" | "municipal">("citizen");
   const [isSignUp, setIsSignUp] = useState(false);
   const { login, socialLogin, loading } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSocialLogin = (provider: 'google' | 'apple') => {
-    socialLogin(provider);
+  const handleSocialLogin = async (provider: 'google' | 'apple') => {
+    await socialLogin(provider);
   };
 
   const handleEmailSubmit = async (email: string) => {

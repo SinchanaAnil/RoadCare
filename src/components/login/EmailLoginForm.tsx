@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 
@@ -12,10 +11,9 @@ type EmailLoginFormProps = {
 const EmailLoginForm = ({ userType }: EmailLoginFormProps) => {
   const [email, setEmail] = useState("");
   const { login } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       toast({
@@ -26,13 +24,8 @@ const EmailLoginForm = ({ userType }: EmailLoginFormProps) => {
       return;
     }
     
-    login(email, userType);
-    
-    // Show specific welcome message based on user type
-    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
-    
-    // Route to correct dashboard based on user type
-    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
+    // Login but don't navigate here - let the auth context handle navigation
+    await login(email, userType);
   };
 
   return (

@@ -22,6 +22,7 @@ import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import Stats from './pages/Stats';
 import Dashboard from './pages/Dashboard';
+import MunicipalDashboard from './pages/MunicipalDashboard';
 import VerifyRepairPage from './pages/VerifyRepairPage';
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const AnimatedRoutes = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="stats" element={<Stats />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="municipal-dashboard" element={<MunicipalDashboard />} />
           <Route path="verify-repair/:id" element={<VerifyRepairPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>

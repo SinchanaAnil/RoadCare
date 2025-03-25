@@ -1,6 +1,5 @@
 
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast as sonnerToast } from "sonner";
 
@@ -9,24 +8,17 @@ type SocialLoginProps = {
 };
 
 const SocialLogin = ({ userType }: SocialLoginProps) => {
-  const navigate = useNavigate();
   const { login } = useAuth();
   const { toast } = useToast();
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
     toast({
       title: `${provider} Login`,
       description: `${provider} login integration will be implemented soon`,
     });
     
-    // Modified to use provider as email and userType as second arg
-    login(`${provider}@roadcare.com`, userType);
-    
-    // Show specific welcome message based on user type
-    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
-    
-    // Route to correct dashboard based on user type
-    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
+    // Login but don't navigate here - let the auth context handle navigation
+    await login(`${provider}@roadcare.com`, userType);
   };
 
   return (

@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 
@@ -12,10 +11,9 @@ type PhoneLoginFormProps = {
 const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
   const [phone, setPhone] = useState("");
   const { login } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handlePhoneLogin = (e: React.FormEvent) => {
+  const handlePhoneLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone) {
       toast({
@@ -26,14 +24,8 @@ const PhoneLoginForm = ({ userType }: PhoneLoginFormProps) => {
       return;
     }
     
-    // Modified to use just phone as email and pass userType as second arg
-    login(phone, userType);
-    
-    // Show specific welcome message based on user type
-    sonnerToast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
-    
-    // Route to correct dashboard based on user type
-    navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
+    // Login but don't navigate here - let the auth context handle navigation
+    await login(phone, userType);
   };
 
   return (

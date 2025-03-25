@@ -33,8 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       toast.success(userType === "citizen" ? "Welcome Citizen!!" : "Welcome Municipal Worker!!");
       
       // Navigate to appropriate dashboard
-      console.log('Redirecting after login to:', userType === "citizen" ? "/dashboard" : "/municipal-dashboard");
-      navigate(userType === "citizen" ? "/dashboard" : "/municipal-dashboard", { replace: true });
+      const redirectPath = userType === "citizen" ? "/dashboard" : "/municipal-dashboard";
+      console.log('Redirecting after login to:', redirectPath);
+      navigate(redirectPath, { replace: true });
       
     } catch (error: any) {
       toast.error(error.message || "Failed to sign in");
