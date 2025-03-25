@@ -10,9 +10,9 @@ const LoginHeader = () => {
           alt="RoadCare Logo" 
           className="w-16 h-16 rounded-full shadow-md"
         />
-        <h2 className="text-2xl font-bold text-[#333333] drop-shadow-md">RoadCare</h2>
+        <h2 className="text-2xl font-bold text-primary drop-shadow-md">RoadCare</h2>
       </div>
-      <p className="text-[#333333]/90 text-sm mt-2">Report road issues and track repairs efficiently</p>
+      <p className="text-primary/90 dark:text-primary/90 text-sm mt-2">Report road issues and track repairs efficiently</p>
     </div>
   );
 };
