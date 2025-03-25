@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Building2, Tool, ClipboardList, MapPin, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Building2, Wrench, ClipboardList, MapPin, AlertTriangle, CheckCircle } from 'lucide-react';
 
 const MunicipalDashboard = () => {
   const { user } = useAuth();
@@ -83,7 +83,7 @@ const MunicipalDashboard = () => {
             {[1, 2, 3].map((item) => (
               <div key={item} className="p-4 bg-[#1A2337] rounded-lg flex items-center gap-4">
                 <div className="p-2 rounded-full bg-[#28354A]">
-                  <Tool className="h-5 w-5 text-[#D2B48C]" />
+                  <Wrench className="h-5 w-5 text-[#D2B48C]" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-medium text-[#A0CED9]">Pothole Repair #{item + 1000}</h4>
