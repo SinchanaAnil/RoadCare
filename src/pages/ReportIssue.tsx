@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -277,6 +276,21 @@ const ReportIssue = () => {
     }, 2000);
   };
 
+  // Get severity color based on value
+  const getSeverityColor = (value: number) => {
+    // Define color ranges from yellow to red
+    if (value <= 3) return '#FEF7CD'; // Light yellow for low severity
+    if (value <= 6) return '#F97316'; // Orange for medium severity
+    return '#ea384c';  // Red for high severity
+  };
+
+  // Get severity label based on value
+  const getSeverityLabel = (value: number) => {
+    if (value <= 3) return 'Low';
+    if (value <= 7) return 'Medium';
+    return 'High';
+  };
+
   return (
     <div className="container py-8 max-w-2xl">
       <div className="mb-6">
@@ -368,18 +382,31 @@ const ReportIssue = () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <Label>Severity</Label>
-                <span className="text-sm text-muted-foreground">
-                  {severity[0] <= 3 ? 'Low' : severity[0] <= 7 ? 'Medium' : 'High'}
+                <span 
+                  className="text-sm font-medium" 
+                  style={{ color: getSeverityColor(severity[0]) }}
+                >
+                  {getSeverityLabel(severity[0])}
                 </span>
               </div>
-              <Slider
-                defaultValue={[5]}
-                max={10}
-                step={1}
-                value={severity}
-                onValueChange={setSeverity}
-                className="py-4"
-              />
+              <div className="pt-4 pb-2">
+                <Slider
+                  defaultValue={[5]}
+                  max={10}
+                  step={1}
+                  value={severity}
+                  onValueChange={setSeverity}
+                  className="py-4"
+                  style={{
+                    background: `linear-gradient(90deg, #FEF7CD 0%, #F97316 50%, #ea384c 100%)`,
+                  }}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Low</span>
+                  <span>Medium</span>
+                  <span>High</span>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-2">

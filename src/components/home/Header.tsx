@@ -13,9 +13,9 @@ const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => {
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div className="flex items-center">
         <img 
-          src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+          src="/lovable-uploads/5aafa63a-5abd-4dbb-b7d3-6244ac17c705.png" 
           alt="RoadCare Logo" 
-          className="h-8 w-auto mr-3 rounded-md"
+          className="h-8 w-auto mr-3 rounded-full"
         />
         <h1 className="text-2xl font-bold">Bengaluru Road Issue Tracker</h1>
       </div>

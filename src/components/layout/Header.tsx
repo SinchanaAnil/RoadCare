@@ -27,6 +27,11 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-1">
           <Link to="/" className="flex items-center gap-1 text-lg font-bold">
+            <img 
+              src="/lovable-uploads/5aafa63a-5abd-4dbb-b7d3-6244ac17c705.png" 
+              alt="RoadCare Logo" 
+              className="h-8 w-8 rounded-full mr-2"
+            />
             <span className="text-fixit-primary font-michroma">Road</span>
             <span className="text-fixit-accent font-michroma">Care</span>
           </Link>

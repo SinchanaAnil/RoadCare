@@ -30,9 +30,9 @@ const Index = () => {
       <div className="text-center max-w-2xl z-10">
         <div className="flex flex-col items-center mb-6">
           <img 
-            src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+            src="/lovable-uploads/5aafa63a-5abd-4dbb-b7d3-6244ac17c705.png" 
             alt="RoadCare Logo" 
-            className="w-64 h-auto mb-4 rounded-lg shadow-md"
+            className="w-64 h-64 mb-4 rounded-full shadow-md"
           />
           <h1 className="text-4xl font-bold text-[#333333] drop-shadow-md">
             Welcome to <span className="font-michroma text-fixit-primary">Road</span><span className="font-michroma text-fixit-accent">Care</span>

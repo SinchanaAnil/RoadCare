@@ -14,11 +14,11 @@ const LoginFormContainer = ({ userType }: LoginFormContainerProps) => {
     <div className="form-container w-1/2 h-full absolute top-0 left-0 z-2 transition-all duration-600 ease-in-out">
       <div className="w-full h-full flex flex-col items-center justify-center p-8">
         <div className="text-center mb-4">
-          <div className="flex flex-col items-center">
+          <div className="flex items-center justify-center gap-3">
             <img 
-              src="/lovable-uploads/23e8e241-bed4-4cca-809e-0f8e97775704.png" 
+              src="/lovable-uploads/5aafa63a-5abd-4dbb-b7d3-6244ac17c705.png" 
               alt="RoadCare Logo" 
-              className="w-32 h-auto mb-2 rounded-lg shadow-sm"
+              className="w-16 h-16 rounded-full shadow-sm"
             />
             <h1 className="text-2xl font-bold mb-1 text-[#3498DB]">
               <span className="font-michroma">RoadCare</span>

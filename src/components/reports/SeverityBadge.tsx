@@ -21,7 +21,7 @@ const SeverityBadge = ({ severity }: SeverityBadgeProps) => {
       );
     case 'low':
       return (
-        <Badge variant="outline" className="bg-muted/10 text-muted-foreground border-muted/20">
+        <Badge variant="outline" className="bg-[#FEF7CD]/50 text-[#B29E30] border-[#FEF7CD]/70">
           Low
         </Badge>
       );
