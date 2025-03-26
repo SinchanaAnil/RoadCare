@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -35,9 +34,9 @@ const VerifyRepair = () => {
       // Simulating API call delay
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // This would be the image URL from your database
-      // For demo, we're using a placeholder
-      setOriginalImage("/placeholder.svg");
+      // In a real implementation, if an image exists in the database, set it
+      // For demo, we'll keep it null to show the upload option
+      setOriginalImage(null);
     };
     
     fetchReportData();
@@ -101,8 +100,12 @@ const VerifyRepair = () => {
       <form onSubmit={handleSubmit}>
         <Card className="p-6 border-blue-200">
           <div className="space-y-6">
-            {/* Original Issue Image Component */}
-            <OriginalIssueImage originalImage={originalImage} />
+            {/* Original Issue Image Component with upload capability */}
+            <OriginalIssueImage 
+              originalImage={originalImage} 
+              setOriginalImage={setOriginalImage}
+              editable={true}
+            />
 
             {/* Repair Notes Component */}
             <RepairNotes 
