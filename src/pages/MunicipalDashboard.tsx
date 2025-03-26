@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Navigate } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
@@ -70,6 +71,7 @@ const mockReports = [
 
 const MunicipalDashboard = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('map');
   const [filteredReports, setFilteredReports] = useState(mockReports);
@@ -95,42 +97,52 @@ const MunicipalDashboard = () => {
     }
   }, [searchQuery]);
 
+  // Color variables - change these based on theme
+  const cardBg = theme === 'dark' ? 'bg-[#28354A]' : 'bg-[#F0F4F8]';
+  const cardBorder = theme === 'dark' ? 'border-[#A0CED9]/20' : 'border-[#D2E1EE]';
+  const darkBg = theme === 'dark' ? 'bg-[#1A2337]' : 'bg-[#E2EAF2]';
+  const headingText = theme === 'dark' ? 'text-[#A0CED9]' : 'text-[#2E4053]';
+  const subtitleText = theme === 'dark' ? 'text-[#A0CED9]/70' : 'text-[#708090]';
+  const countText = theme === 'dark' ? 'text-white' : 'text-[#2E4053]';
+  const progressBg = theme === 'dark' ? 'bg-[#1A2337]' : 'bg-[#D2E1EE]';
+  const progressFill = theme === 'dark' ? 'bg-[#D2B48C]' : 'bg-[#B87333]';
+
   const dashboardItems = [
     {
       title: 'Pending Issues',
       count: 24,
-      icon: <AlertTriangle className="h-8 w-8 text-[#E57373]" />,
+      icon: <AlertTriangle className={`h-8 w-8 ${theme === 'dark' ? 'text-[#E57373]' : 'text-[#D32F2F]'}`} />,
       description: 'Road issues awaiting your action',
-      color: 'bg-[#28354A] border-[#E57373]/20',
+      color: `${cardBg} border-${theme === 'dark' ? '[#E57373]/20' : '[#E57373]/30'}`,
     },
     {
       title: 'Resolved Issues',
       count: 156,
-      icon: <CheckCircle className="h-8 w-8 text-[#A0CED9]" />,
+      icon: <CheckCircle className={`h-8 w-8 ${theme === 'dark' ? 'text-[#A0CED9]' : 'text-[#2CB67D]'}`} />,
       description: 'Successfully completed repairs',
-      color: 'bg-[#28354A] border-[#A0CED9]/20',
+      color: `${cardBg} border-${theme === 'dark' ? '[#A0CED9]/20' : '[#2CB67D]/30'}`,
     },
     {
       title: 'Work Orders',
       count: 18,
-      icon: <ClipboardList className="h-8 w-8 text-[#D2B48C]" />,
+      icon: <ClipboardList className={`h-8 w-8 ${theme === 'dark' ? 'text-[#D2B48C]' : 'text-[#B87333]'}`} />,
       description: 'Active maintenance tasks',
-      color: 'bg-[#28354A] border-[#D2B48C]/20',
+      color: `${cardBg} border-${theme === 'dark' ? '[#D2B48C]/20' : '[#B87333]/30'}`,
     },
     {
       title: 'Service Areas',
       count: 5,
-      icon: <MapPin className="h-8 w-8 text-[#A0CED9]" />,
+      icon: <MapPin className={`h-8 w-8 ${theme === 'dark' ? 'text-[#A0CED9]' : 'text-[#2E4053]'}`} />,
       description: 'Districts under your supervision',
-      color: 'bg-[#28354A] border-[#A0CED9]/20',
+      color: `${cardBg} border-${theme === 'dark' ? '[#A0CED9]/20' : '[#2E4053]/30'}`,
     },
   ];
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#A0CED9] mb-2">Municipal Worker Dashboard</h1>
-        <p className="text-[#D2B48C]">Welcome back, {user.name}! Manage and respond to road infrastructure issues.</p>
+        <h1 className={`text-3xl font-bold ${headingText} mb-2`}>Municipal Worker Dashboard</h1>
+        <p className={theme === 'dark' ? 'text-[#D2B48C]' : 'text-[#708090]'}>Welcome back, {user.name}! Manage and respond to road infrastructure issues.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -138,7 +150,7 @@ const MunicipalDashboard = () => {
           <div className="flex flex-col gap-4">
             {/* Search and Filter Section */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-xl font-semibold text-[#A0CED9]">Road Issue Tracker</h2>
+              <h2 className={`text-xl font-semibold ${headingText}`}>Road Issue Tracker</h2>
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -163,11 +175,11 @@ const MunicipalDashboard = () => {
                   <Card className={`p-6 ${item.color} border-2 hover:shadow-lg transition-all duration-200`}>
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-lg font-medium text-[#A0CED9] mb-1">{item.title}</h3>
-                        <p className="text-3xl font-bold text-white mb-2">{item.count}</p>
-                        <p className="text-sm text-[#A0CED9]/70">{item.description}</p>
+                        <h3 className={`text-lg font-medium ${headingText} mb-1`}>{item.title}</h3>
+                        <p className={`text-3xl font-bold ${countText} mb-2`}>{item.count}</p>
+                        <p className={`text-sm ${subtitleText}`}>{item.description}</p>
                       </div>
-                      <div className="p-3 rounded-full bg-[#1A2337]/50">
+                      <div className={`p-3 rounded-full ${darkBg}`}>
                         {item.icon}
                       </div>
                     </div>
@@ -212,50 +224,52 @@ const MunicipalDashboard = () => {
         
         <div>
           <div className="flex flex-col gap-4">
-            <Card className="p-6 bg-[#28354A] border-[#A0CED9]/20 border-2">
-              <h2 className="text-xl font-bold text-[#A0CED9] mb-4">Your Performance</h2>
+            {/* Performance Card */}
+            <Card className={`p-6 ${cardBg} border-${cardBorder} border-2`}>
+              <h2 className={`text-xl font-bold ${headingText} mb-4`}>Your Performance</h2>
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-[#A0CED9]/70">Response Time</span>
-                    <span className="text-sm font-medium text-[#D2B48C]">9.2 hours</span>
+                    <span className={`text-sm ${subtitleText}`}>Response Time</span>
+                    <span className={`text-sm font-medium ${theme === 'dark' ? 'text-[#D2B48C]' : 'text-[#B87333]'}`}>9.2 hours</span>
                   </div>
-                  <div className="w-full h-2 bg-[#1A2337] rounded-full overflow-hidden">
-                    <div className="h-full bg-[#D2B48C] rounded-full" style={{ width: '75%' }}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-[#A0CED9]/70">Resolution Rate</span>
-                    <span className="text-sm font-medium text-[#D2B48C]">92%</span>
-                  </div>
-                  <div className="w-full h-2 bg-[#1A2337] rounded-full overflow-hidden">
-                    <div className="h-full bg-[#D2B48C] rounded-full" style={{ width: '92%' }}></div>
+                  <div className={`w-full h-2 ${progressBg} rounded-full overflow-hidden`}>
+                    <div className={`h-full ${progressFill} rounded-full`} style={{ width: '75%' }}></div>
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-[#A0CED9]/70">Citizen Satisfaction</span>
-                    <span className="text-sm font-medium text-[#D2B48C]">4.7/5</span>
+                    <span className={`text-sm ${subtitleText}`}>Resolution Rate</span>
+                    <span className={`text-sm font-medium ${theme === 'dark' ? 'text-[#D2B48C]' : 'text-[#B87333]'}`}>92%</span>
                   </div>
-                  <div className="w-full h-2 bg-[#1A2337] rounded-full overflow-hidden">
-                    <div className="h-full bg-[#D2B48C] rounded-full" style={{ width: '94%' }}></div>
+                  <div className={`w-full h-2 ${progressBg} rounded-full overflow-hidden`}>
+                    <div className={`h-full ${progressFill} rounded-full`} style={{ width: '92%' }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`text-sm ${subtitleText}`}>Citizen Satisfaction</span>
+                    <span className={`text-sm font-medium ${theme === 'dark' ? 'text-[#D2B48C]' : 'text-[#B87333]'}`}>4.7/5</span>
+                  </div>
+                  <div className={`w-full h-2 ${progressBg} rounded-full overflow-hidden`}>
+                    <div className={`h-full ${progressFill} rounded-full`} style={{ width: '94%' }}></div>
                   </div>
                 </div>
               </div>
             </Card>
             
-            <Card className="p-6 bg-[#28354A] border-[#A0CED9]/20 border-2">
-              <h2 className="text-xl font-bold text-[#A0CED9] mb-4">Recent Issues</h2>
+            {/* Recent Issues Card */}
+            <Card className={`p-6 ${cardBg} border-${cardBorder} border-2`}>
+              <h2 className={`text-xl font-bold ${headingText} mb-4`}>Recent Issues</h2>
               <div className="space-y-4">
                 {[1, 2, 3].map((item) => (
-                  <div key={item} className="p-4 bg-[#1A2337] rounded-lg flex items-center gap-4">
-                    <div className="p-2 rounded-full bg-[#28354A]">
-                      <Wrench className="h-5 w-5 text-[#D2B48C]" />
+                  <div key={item} className={`p-4 ${darkBg} rounded-lg flex items-center gap-4`}>
+                    <div className={`p-2 rounded-full ${theme === 'dark' ? 'bg-[#28354A]' : 'bg-[#D2E1EE]'}`}>
+                      <Wrench className={`h-5 w-5 ${theme === 'dark' ? 'text-[#D2B48C]' : 'text-[#B87333]'}`} />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-[#A0CED9]">Pothole Repair #{item + 1000}</h4>
-                      <p className="text-sm text-[#A0CED9]/70">HSR Layout, Sector {item}</p>
+                      <h4 className={`font-medium ${headingText}`}>Pothole Repair #{item + 1000}</h4>
+                      <p className={`text-sm ${subtitleText}`}>HSR Layout, Sector {item}</p>
                     </div>
                     <div>
                       <Button variant="outline" size="sm" className="bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200" asChild>
@@ -267,22 +281,23 @@ const MunicipalDashboard = () => {
               </div>
             </Card>
             
-            <Card className="p-6 bg-[#28354A] border-[#A0CED9]/20 border-2">
-              <h2 className="text-xl font-bold text-[#A0CED9] mb-4">AI Verification</h2>
-              <p className="text-sm text-[#A0CED9]/80 mb-4">
+            {/* AI Verification Card */}
+            <Card className={`p-6 ${cardBg} border-${cardBorder} border-2`}>
+              <h2 className={`text-xl font-bold ${headingText} mb-4`}>AI Verification</h2>
+              <p className={`text-sm ${subtitleText} mb-4`}>
                 Upload repair photos to verify issue resolution with our AI system. Get instant verification and close tickets efficiently.
               </p>
-              <div className="p-4 bg-[#1A2337] rounded-lg mb-4">
+              <div className={`p-4 ${darkBg} rounded-lg mb-4`}>
                 <div className="flex items-center gap-3 mb-3">
-                  <AlertTriangle className="h-5 w-5 text-[#E57373]" />
-                  <h4 className="font-medium text-[#A0CED9]">Pending Verifications</h4>
+                  <AlertTriangle className={`h-5 w-5 ${theme === 'dark' ? 'text-[#E57373]' : 'text-[#D32F2F]'}`} />
+                  <h4 className={`font-medium ${headingText}`}>Pending Verifications</h4>
                 </div>
-                <p className="text-sm text-[#A0CED9]/70 mb-2">5 repairs awaiting your verification</p>
+                <p className={`text-sm ${subtitleText} mb-2`}>5 repairs awaiting your verification</p>
                 <Button variant="outline" size="sm" className="w-full justify-center" asChild>
                   <Link to="/dashboard">View All</Link>
                 </Button>
               </div>
-              <Button className="w-full bg-[#D2B48C] hover:bg-[#D2B48C]/90 text-[#1A2337]">
+              <Button className={`w-full ${theme === 'dark' ? 'bg-[#D2B48C] hover:bg-[#D2B48C]/90 text-[#1A2337]' : 'bg-[#B87333] hover:bg-[#B87333]/90 text-white'}`}>
                 <Wrench className="h-4 w-4 mr-2" />
                 Start New Repair Verification
               </Button>
@@ -295,4 +310,3 @@ const MunicipalDashboard = () => {
 };
 
 export default MunicipalDashboard;
-
